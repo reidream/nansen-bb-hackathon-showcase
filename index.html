@@ -98,6 +98,71 @@
         border: 0;
       }
 
+      html:lang(zh-Hans) body,
+      html:lang(zh-Hans) button,
+      html:lang(zh-Hans) input {
+        font-family: 'DM Sans', 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+      }
+
+      .language-switcher {
+        display: inline-grid;
+        gap: 8px;
+        justify-items: start;
+        margin: 0 0 18px;
+      }
+
+      .language-switcher-label {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .language-options {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 5px;
+        border: 1px solid rgba(17, 247, 239, 0.24);
+        border-radius: 999px;
+        background: rgba(2, 14, 28, 0.56);
+      }
+
+      .language-options button {
+        min-height: 34px;
+        padding: 7px 12px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: transparent;
+        color: rgba(226, 238, 255, 0.78);
+        cursor: pointer;
+      }
+
+      .language-options button[aria-pressed='true'] {
+        border-color: rgba(255, 216, 74, 0.72);
+        background: rgba(255, 216, 74, 0.13);
+        color: #fff4bf;
+      }
+
+      .detail-language-note {
+        display: none;
+        align-items: center;
+        min-height: 36px;
+        margin: 0 0 10px;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 216, 74, 0.42);
+        border-radius: 999px;
+        background: rgba(255, 216, 74, 0.11);
+        color: #fff4bf;
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+
+      .detail-language-note:not([hidden]) {
+        display: inline-flex;
+      }
+
       .hero {
         position: relative;
         overflow: hidden;
@@ -1754,6 +1819,16 @@
 
       #submissions .reset-link {
         color: var(--panel-cyan);
+      }
+
+      #submissions .toolbar .reset-link {
+        justify-self: start;
+        margin-top: 0;
+        min-height: 30px;
+      }
+
+      #submissions .reset-link[hidden] {
+        display: none !important;
       }
 
       #submissions .submission-grid {
@@ -4001,11 +4076,10 @@
         position: relative;
         min-height: 248px;
         overflow: hidden;
-        border: 1px solid rgba(255, 216, 74, 0.88);
+        border: 0;
         border-radius: 12px;
         background: #03101f;
         box-shadow:
-          0 0 0 1px rgba(255, 216, 74, 0.16) inset,
           0 0 34px rgba(255, 216, 74, 0.24),
           0 22px 48px rgba(0, 0, 0, 0.32);
         isolation: isolate;
@@ -4013,24 +4087,23 @@
 
       .hero-prize-panel::before,
       .hero-prize-panel::after {
-        content: '';
-        position: absolute;
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .hero-prize-panel::before {
         content: none;
       }
 
-      .hero-prize-panel::after {
-        inset: 11px;
-        border: 1px solid rgba(255, 216, 74, 0.34);
-        border-radius: 8px;
-        box-shadow: 0 0 18px rgba(255, 216, 74, 0.16) inset;
+      .hero-prize-art {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 43% 50%;
+        filter: saturate(1.08) contrast(1.04);
+        opacity: 0;
+        transition: opacity 220ms ease;
       }
 
-      .hero-prize-art {
+      .hero-prize-fallback {
         position: absolute;
         inset: 0;
         z-index: 1;
@@ -4039,6 +4112,16 @@
         object-fit: cover;
         object-position: 43% 50%;
         filter: saturate(1.08) contrast(1.04);
+        opacity: 1;
+        transition: opacity 220ms ease;
+      }
+
+      .hero-prize-panel.is-video-ready .hero-prize-art {
+        opacity: 1;
+      }
+
+      .hero-prize-panel.is-video-ready .hero-prize-fallback {
+        opacity: 0;
       }
 
       .hero-prize-copy {
@@ -4315,7 +4398,8 @@
         min-height: 0;
       }
 
-      .hero-prize-art {
+      .hero-prize-art,
+      .hero-prize-fallback {
         object-position: 50% 50%;
       }
 
@@ -4888,7 +4972,8 @@
           min-height: 230px;
         }
 
-        .hero-prize-art {
+        .hero-prize-art,
+        .hero-prize-fallback {
           object-position: 36% 50%;
         }
 
@@ -6615,7 +6700,11 @@
 
       @media (max-width: 760px) {
         .hero-prize-panel {
-          display: none;
+          display: block;
+          width: 100%;
+          min-height: 230px;
+          margin-top: 10px;
+          aspect-ratio: 1.5 / 1;
         }
 
         .funnel-head {
@@ -7670,11 +7759,12 @@
         width: 100%;
         min-height: clamp(250px, 21.5vw, 360px);
         aspect-ratio: 2.12 / 1;
-        border-width: 1px;
+        border-width: 0;
         border-radius: 14px;
       }
 
-      .hero-prize-art {
+      .hero-prize-art,
+      .hero-prize-fallback {
         object-position: 50% 50%;
       }
 
@@ -7999,7 +8089,7 @@
 
         .hero-prize-stack {
           max-width: 100%;
-          gap: 0;
+          gap: 10px;
         }
 
         .hero-prize-stack .hero-submission-summary {
@@ -8039,6 +8129,18 @@
 
         .hero-prize-stack .summary-number {
           font-size: clamp(2.1rem, 9.2vw, 2.45rem);
+        }
+
+        .hero-prize-stack .hero-prize-panel {
+          width: 100%;
+          min-height: 0;
+          aspect-ratio: 1.5 / 1;
+        }
+
+        .hero-prize-art,
+        .hero-prize-fallback {
+          object-fit: contain;
+          object-position: 50% 50%;
         }
 
         .funnel-flow {
@@ -8100,30 +8202,162 @@
           content: none !important;
         }
       }
+
+      #submissions .section-header {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Minimal hero language nav. Keep this block late so it wins over older pill styles. */
+      .hero-funnel .language-switcher {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin: 0 0 clamp(12px, 1.7vw, 20px);
+      }
+
+      .hero-funnel .language-switcher-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .hero-funnel .language-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+        width: min(100%, 288px);
+        max-width: 100%;
+        padding: 16px 0 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      .hero-funnel .language-options button {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-width: 0;
+        min-height: 22px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: rgba(226, 238, 255, 0.72);
+        font-size: 0.84rem;
+        font-weight: 800;
+        line-height: 1.2;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .hero-funnel .language-options button + button {
+        border-left: 1px solid rgba(226, 238, 255, 0.24);
+      }
+
+      .hero-funnel .language-options button:hover,
+      .hero-funnel .language-options button:focus-visible {
+        color: #f8fbff;
+      }
+
+      .hero-funnel .language-options button:focus-visible {
+        outline: 2px solid rgba(17, 247, 239, 0.8);
+        outline-offset: 4px;
+      }
+
+      .hero-funnel .language-options button[aria-pressed='true'] {
+        background: transparent;
+        color: var(--panel-cyan);
+      }
+
+      .hero-funnel .language-options button[aria-pressed='true']::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        width: 80px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        box-shadow: 0 0 12px rgba(17, 247, 239, 0.42);
+        transform: translateX(-50%);
+      }
+
+      @media (max-width: 760px) {
+        .hero-funnel .language-switcher {
+          justify-content: center;
+          margin-bottom: 16px;
+          text-align: center;
+        }
+
+        .hero-funnel .language-options {
+          justify-content: center;
+          width: min(100%, 246px);
+          row-gap: 6px;
+        }
+
+        .hero-funnel .language-options button {
+          min-height: 20px;
+          padding: 0 8px;
+          font-size: 0.78rem;
+        }
+
+        .hero-funnel .language-options button[aria-pressed='true']::before {
+          width: 66px;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="hero hero-funnel" aria-labelledby="hero-title">
       <section class="funnel-box" aria-labelledby="hero-title">
+        <div class="language-switcher" aria-label="表示言語">
+          <p class="language-switcher-label sr-only" data-i18n="ui.language.label">表示言語</p>
+          <div class="language-options" role="group" aria-label="Display language">
+            <button type="button" data-lang-option="ja" aria-pressed="true">日本語</button>
+            <button type="button" data-lang-option="en" aria-pressed="false">English</button>
+            <button type="button" data-lang-option="zh-Hans" aria-pressed="false">简体中文</button>
+          </div>
+        </div>
         <div class="funnel-head">
           <div class="hero-main-copy">
             <p class="funnel-kicker"><img class="nansen-mark" src="emoji/Nansen_Logo_Icon_GreenDark_RGB.svg" alt="" loading="lazy" />NANSEN X COMMUNITY</p>
-            <h1 class="funnel-title" id="hero-title">Nansen API<br />Bot<br /><span class="title-accent">Hackathon</span><span class="title-host">主催:bb</span></h1>
+            <h1 class="funnel-title" id="hero-title">Nansen API<br />Bot<br /><span class="title-accent">Hackathon</span><span class="title-host" data-i18n="ui.hero.host">主催:bb</span></h1>
             <ul class="hero-terminal" aria-label="Nansen API Bot Hackathon themes">
               <li>nansen api = powering builders</li>
               <li>analyze onchain data</li>
               <li>build the future</li>
             </ul>
           </div>
-          <div class="hero-prize-stack" aria-label="Prize Bot summary">
+          <div class="hero-prize-stack" aria-label="Prize Bot summary" data-i18n-aria-label="ui.hero.prize_stack_label">
             <p class="funnel-caption hero-submission-summary">
               <span class="summary-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
               </span>
-              <span class="summary-body"><span class="summary-kicker">最終提出 <span>final submissions</span></span><span class="summary-copy">登録完了41人のうち、提出まで到達した</span><strong class="summary-number">9<span class="summary-number-unit">人</span></strong></span>
+              <span class="summary-body"><span class="summary-kicker"><span data-i18n="ui.hero.summary_kicker">最終提出</span> <span data-i18n="ui.hero.summary_kicker_sub">final submissions</span></span><span class="summary-copy" data-i18n="ui.hero.summary_copy">登録完了41人のうち、提出まで到達した</span><strong class="summary-number">9<span class="summary-number-unit" data-i18n="ui.hero.submission_unit">人</span></strong></span>
             </p>
-            <article class="hero-prize-panel" aria-label="Winner Bot Prize $1,000 for top hackathon bot">
-              <video class="hero-prize-art" src="remotion-app/out/panel.mp4" autoplay loop muted playsinline preload="auto"></video>
+            <article class="hero-prize-panel" aria-label="Winner Bot Prize $1,000 for top hackathon bot" data-i18n-aria-label="ui.hero.prize_panel_label">
+              <img class="hero-prize-fallback" src="assets/prize-bot-1000-hero.png" alt="" loading="lazy" decoding="async" />
+              <video class="hero-prize-art" src="remotion-app/out/panel.mp4" poster="assets/prize-bot-1000-hero.png" autoplay loop muted playsinline preload="metadata"></video>
               <div class="hero-prize-copy sr-only">
                 <p class="hero-prize-label">Winner Bot Prize</p>
                 <strong class="hero-prize-amount">$1,000</strong>
@@ -8132,44 +8366,44 @@
             </article>
           </div>
         </div>
-        <div class="funnel-flow" aria-label="$1,000賞金審査への到達プロセス: 登録完了 41人、Bot稼働 24人、CLI連携 10人、提出 9人">
+        <div class="funnel-flow" aria-label="$1,000賞金審査への到達プロセス: 登録完了 41人、Bot稼働 24人、CLI連携 10人、提出 9人" data-i18n-aria-label="ui.hero.funnel_aria_label">
           <article class="funnel-step">
             <span class="funnel-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h4M10 13h5M10 17h3"></path></svg>
             </span>
-            <p>登録完了</p>
+            <p data-i18n="ui.hero.step_registered">登録完了</p>
             <strong>41</strong>
-            <span>人</span>
+            <span data-i18n="ui.hero.submission_unit">人</span>
           </article>
           <span class="funnel-arrow" aria-hidden="true">→</span>
           <article class="funnel-step">
             <span class="funnel-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M7 10h10a3 3 0 0 1 3 3v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a3 3 0 0 1 3-3Z"></path><path d="M12 10V6M9 6h6M9 15h.01M15 15h.01M8 20v2M16 20v2"></path></svg>
             </span>
-            <p>Bot稼働</p>
+            <p data-i18n="ui.hero.step_running">Bot稼働</p>
             <strong>24</strong>
-            <span>人</span>
+            <span data-i18n="ui.hero.submission_unit">人</span>
           </article>
           <span class="funnel-arrow" aria-hidden="true">→</span>
           <article class="funnel-step">
             <span class="funnel-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="m8 10 3 2-3 2M13 15h4"></path></svg>
             </span>
-            <p>CLI連携</p>
+            <p data-i18n="ui.hero.step_cli">CLI連携</p>
             <strong>10</strong>
-            <span>人</span>
+            <span data-i18n="ui.hero.submission_unit">人</span>
           </article>
           <span class="funnel-arrow" aria-hidden="true">→</span>
           <article class="funnel-step funnel-step-final">
             <span class="funnel-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M8 4h8v3h3v2a5 5 0 0 1-5 5h-.5l-.5 2h3v2H8v-2h3l-.5-2H10a5 5 0 0 1-5-5V7h3V4Z"></path><path d="M8 7H5M16 7h3"></path></svg>
             </span>
-            <p>提出</p>
+            <p data-i18n="ui.hero.step_submitted">提出</p>
             <strong>9</strong>
-            <span>人</span>
+            <span data-i18n="ui.hero.submission_unit">人</span>
           </article>
         </div>
-        <p class="funnel-note">
+        <p class="funnel-note" data-i18n="ui.hero.note">
           登録完了からBot稼働、CLI連携、提出へ進み、$1,000賞金審査の対象になるまでの到達プロセス。下の一覧では9作品の役割、Nansen活用、公開導線を確認できます。
         </p>
       </section>
@@ -8180,14 +8414,14 @@
         <div class="section-header">
           <div>
             <div class="section-title-wrap">
-              <h2 class="section-title" id="submissions-title">提出作品</h2>
-              <span class="submission-total" aria-label="総提出数 9件">09</span>
+              <h2 class="section-title" id="submissions-title" data-i18n="ui.submissions.title">提出作品</h2>
+              <span class="submission-total" aria-label="総提出数 9件" data-i18n-aria-label="ui.submissions.total_aria_label">09</span>
             </div>
-            <p class="section-support">
+            <p class="section-support" data-i18n="ui.submissions.support">
               README、デモ、公開リンクから整理した提出作品のショーケース。目的別に見比べ、
               次に試すBotを探せます。
             </p>
-            <p class="section-note">
+            <p class="section-note" data-i18n="ui.submissions.note">
               Nansen API の使い方、ユーザー場面、実利用フローを作品ごとに確認できます。
             </p>
           </div>
@@ -8197,65 +8431,65 @@
         <section class="guide-panel is-collapsed" id="reviewer-radar" aria-labelledby="guide-title">
           <div class="guide-head">
             <div class="guide-copy">
-              <p class="guide-kicker">NANSEN BOT NAVIGATOR</p>
-              <h2 class="guide-title" id="guide-title">目的別にBotを探す</h2>
-              <p class="guide-note">やりたいこと、チェーン、Bot名から9つのBotを絞り込めます。</p>
+              <p class="guide-kicker" data-i18n="ui.guide.kicker">NANSEN BOT NAVIGATOR</p>
+              <h2 class="guide-title" id="guide-title" data-i18n="ui.guide.title">目的別にBotを探す</h2>
+              <p class="guide-note" data-i18n="ui.guide.note">やりたいこと、チェーン、Bot名から9つのBotを絞り込めます。</p>
             </div>
             <div class="guide-control-actions">
-              <button class="guide-reset" type="button" data-guide-action="reset" hidden>すべて表示</button>
+              <button class="guide-reset" type="button" data-guide-action="reset" data-i18n="ui.guide.reset" hidden>すべて表示</button>
               <button class="guide-toggle" type="button" data-guide-action="toggle" aria-expanded="false" aria-controls="guide-body">開く</button>
             </div>
           </div>
           <div class="guide-search-row" hidden aria-hidden="true">
             <label class="guide-search" for="guide-search">
               <span class="guide-search-icon" aria-hidden="true"></span>
-              <input id="guide-search" type="search" autocomplete="off" />
+              <input id="guide-search" type="search" autocomplete="off" data-i18n-placeholder="ui.guide.search_placeholder" data-i18n-aria-label="ui.guide.search_label" />
             </label>
           </div>
           <div class="guide-layout" id="guide-body" hidden aria-hidden="true">
-            <aside class="guide-map" aria-label="目的マップ">
+            <aside class="guide-map" aria-label="目的マップ" data-i18n-aria-label="ui.guide.map_aria_label">
               <div class="guide-map-head">
-                <p class="guide-kicker">PURPOSE MAP</p>
-                <h3 class="guide-map-title">目的から探す</h3>
+                <p class="guide-kicker" data-i18n="ui.guide.purpose_kicker">PURPOSE MAP</p>
+                <h3 class="guide-map-title" data-i18n="ui.guide.purpose_title">目的から探す</h3>
               </div>
-              <div class="guide-category-list" role="list" aria-label="目的カテゴリ">
+              <div class="guide-category-list" role="list" aria-label="目的カテゴリ" data-i18n-aria-label="ui.guide.category_list_aria_label">
                 <button type="button" class="guide-category" data-guide-filter="all" aria-pressed="true">
-                  <span>すべて</span>
+                  <span data-i18n="ui.guide.all">すべて</span>
                   <strong data-guide-count="all">9</strong>
                 </button>
                 <button type="button" class="guide-category" data-guide-filter="initial-signal" aria-pressed="false">
-                  <span>初動を拾う</span>
+                  <span data-i18n="ui.guide.initial_signal">初動を拾う</span>
                   <strong data-guide-count="initial-signal">0</strong>
                 </button>
                 <button type="button" class="guide-category" data-guide-filter="verify-evidence" aria-pressed="false">
-                  <span>根拠を確認する</span>
+                  <span data-i18n="ui.guide.verify_evidence">根拠を確認する</span>
                   <strong data-guide-count="verify-evidence">0</strong>
                 </button>
                 <button type="button" class="guide-category" data-guide-filter="follow-review" aria-pressed="false">
-                  <span>継続・振り返る</span>
+                  <span data-i18n="ui.guide.follow_review">継続・振り返る</span>
                   <strong data-guide-count="follow-review">0</strong>
                 </button>
                 <button type="button" class="guide-category" data-guide-filter="community-use" aria-pressed="false">
-                  <span>コミュニティで使う</span>
+                  <span data-i18n="ui.guide.community_use">コミュニティで使う</span>
                   <strong data-guide-count="community-use">0</strong>
                 </button>
                 <button type="button" class="guide-category" data-guide-filter="wallet-tracking" aria-pressed="false">
-                  <span>ウォレットを追う</span>
+                  <span data-i18n="ui.guide.wallet_tracking">ウォレットを追う</span>
                   <strong data-guide-count="wallet-tracking">0</strong>
                 </button>
               </div>
             </aside>
-            <section class="guide-results" aria-label="目的別Botリスト">
+            <section class="guide-results" aria-label="目的別Botリスト" data-i18n-aria-label="ui.guide.results_aria_label">
               <div class="guide-results-head">
                 <div>
-                  <p class="guide-kicker">BOT DISCOVERY</p>
+                  <p class="guide-kicker" data-i18n="ui.guide.discovery_kicker">BOT DISCOVERY</p>
                   <h3 class="guide-results-title" id="guide-results-title">Botを探す</h3>
                   <p class="guide-results-note" id="guide-results-note">やりたいこと、チェーン、Bot名からBotを見つける</p>
                   <p class="guide-range" id="guide-range" aria-live="polite">全9件中 1-6件を表示</p>
                 </div>
               </div>
               <ul class="guide-list" id="guide-list"></ul>
-              <p class="guide-empty" id="guide-empty" hidden>一致するBotがありません。検索語または目的を調整してください。</p>
+              <p class="guide-empty" id="guide-empty" data-i18n="ui.guide.empty" hidden>一致するBotがありません。検索語または目的を調整してください。</p>
               <div class="guide-more">
                 <button type="button" data-guide-action="more" aria-expanded="false">さらに3件を見る</button>
               </div>
@@ -8264,20 +8498,21 @@
         </section>
 
         <form class="toolbar" role="search" aria-label="提出作品を絞り込み" onsubmit="return false">
-          <label class="sr-only" for="submission-search">提出作品を検索</label>
+          <label class="sr-only" for="submission-search" data-i18n="ui.submissions.search_label">提出作品を検索</label>
           <div class="search-shell">
             <span class="search-icon" aria-hidden="true"></span>
             <input
               id="submission-search"
               type="search"
               autocomplete="off"
+              data-i18n-placeholder="ui.submissions.search_placeholder"
             />
           </div>
+          <button class="reset-link" type="button" id="reset-filters" data-i18n="ui.submissions.reset" hidden>絞り込みをリセット</button>
         </form>
 
         <div class="empty-state" id="empty-state" hidden>
-          <p>一致する提出作品がありません。検索語を調整してください。</p>
-          <button class="reset-link" type="button" id="reset-filters">絞り込みをリセット</button>
+          <p data-i18n="ui.submissions.empty">一致する提出作品がありません。検索語を調整してください。</p>
         </div>
 
         <div class="submission-grid" id="submission-grid">
@@ -8714,7 +8949,7 @@
           </article>
         </div>
 
-        <a class="nansen-affiliate-cta" href="https://app.nansen.ai/welcome?promoCode=bbdao&amp;utm_campaign=Nansen+Affiliates&amp;utm_medium=bitly&amp;utm_source=affiliates" target="_blank" rel="noopener noreferrer sponsored" aria-label="Nansenを試す - 公式アフィリエイトリンク">
+        <a class="nansen-affiliate-cta" href="https://app.nansen.ai/welcome?promoCode=bbdao&amp;utm_campaign=Nansen+Affiliates&amp;utm_medium=bitly&amp;utm_source=affiliates" target="_blank" rel="noopener noreferrer sponsored" aria-label="Nansenを試す - 公式アフィリエイトリンク" data-i18n-aria-label="ui.cta.aria_label">
           <span class="nansen-affiliate-brand">
             <span class="nansen-affiliate-logo" aria-hidden="true">
               <img src="emoji/nansen_green.png" alt="" loading="lazy" />
@@ -8722,12 +8957,12 @@
             <span>Nansen</span>
           </span>
           <span class="nansen-affiliate-copy">
-            <span class="nansen-affiliate-title">Nansenを試す</span>
-            <span class="nansen-affiliate-subcopy">9作品が活用したオンチェーン分析を、自分でも触ってみる。</span>
+            <span class="nansen-affiliate-title" data-i18n="ui.cta.title">Nansenを試す</span>
+            <span class="nansen-affiliate-subcopy" data-i18n="ui.cta.subcopy">9作品が活用したオンチェーン分析を、自分でも触ってみる。</span>
           </span>
           <span class="nansen-affiliate-action">
-            <span class="nansen-affiliate-button">Nansenを開く ↗</span>
-            <span class="nansen-affiliate-note">公式アフィリエイトリンク</span>
+            <span class="nansen-affiliate-button" data-i18n="ui.cta.button">Nansenを開く ↗</span>
+            <span class="nansen-affiliate-note" data-i18n="ui.cta.note">公式アフィリエイトリンク</span>
           </span>
         </a>
       </section>
@@ -8741,54 +8976,2315 @@
             <img src="emoji/icon2.svg" alt="" loading="lazy" />
           </span>
           <div>
-            <h2>主催: boarding bridge</h2>
-            <p>Nansen API Bot Hackathon — 2026年4月開催</p>
-            <a class="footer-primary-link" href="https://discord.com/invite/boarding-bridge" target="_blank" rel="noopener noreferrer">bb公式Discord ↗</a>
+            <h2 data-i18n="ui.footer.title">主催: boarding bridge</h2>
+            <p data-i18n="ui.footer.description">Nansen API Bot Hackathon — 2026年4月開催</p>
+            <a class="footer-primary-link" href="https://discord.com/invite/boarding-bridge" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.discord" data-i18n-aria-label="ui.footer.discord_aria_label">bb公式Discord ↗</a>
           </div>
         </section>
-        <article class="footer-stat" aria-label="Discordメンバー 30K">
+        <article class="footer-stat" aria-label="Discordメンバー 30K" data-i18n-aria-label="ui.footer.stat_members_aria_label">
           <span class="footer-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M8 9h.01M16 9h.01M7 17l1.2-2.4A9 9 0 0 1 6 8.8C6 6.7 8.7 5 12 5s6 1.7 6 3.8a9 9 0 0 1-2.2 5.8L17 17l-3-1h-4l-3 1Z"></path></svg>
           </span>
-          <p><strong>30K</strong><span>Discordメンバー</span></p>
+          <p><strong>30K</strong><span data-i18n="ui.footer.stat_members_label">Discordメンバー</span></p>
         </article>
-        <article class="footer-stat" aria-label="月間チャット 150K">
+        <article class="footer-stat" aria-label="月間チャット 150K" data-i18n-aria-label="ui.footer.stat_chats_aria_label">
           <span class="footer-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4V6Z"></path><path d="M8 10h8M8 13h5"></path></svg>
           </span>
-          <p><strong>150K</strong><span>月間チャット</span></p>
+          <p><strong>150K</strong><span data-i18n="ui.footer.stat_chats_label">月間チャット</span></p>
         </article>
-        <article class="footer-stat" aria-label="開催イベント 200以上">
+        <article class="footer-stat" aria-label="開催イベント 200以上" data-i18n-aria-label="ui.footer.stat_events_aria_label">
           <span class="footer-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M7 3v3M17 3v3M4 8h16M5 5h14v15H5z"></path><path d="M8 12h3M13 12h3M8 16h3"></path></svg>
           </span>
-          <p><strong>200+</strong><span>開催イベント</span></p>
+          <p><strong>200+</strong><span data-i18n="ui.footer.stat_events_label">開催イベント</span></p>
         </article>
-        <nav class="footer-links" aria-label="コミュニティリンク">
+        <nav class="footer-links" aria-label="コミュニティリンク" data-i18n-aria-label="ui.footer.links_aria_label">
           <a href="https://www.boardingbridge.org/" target="_blank" rel="noopener noreferrer">
             <span class="footer-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg></span>
-            <span>公式サイト</span>
+            <span data-i18n="ui.footer.official_site">公式サイト</span>
             <span class="footer-link-arrow" aria-hidden="true">›</span>
           </a>
           <a href="https://crypto-times.jp/user/boarding-bridge/" target="_blank" rel="noopener noreferrer">
             <span class="footer-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h8l4 4v12H7z"></path><path d="M14 4v5h5M10 13h6M10 16h6"></path></svg></span>
-            <span>記事</span>
+            <span data-i18n="ui.footer.articles">記事</span>
             <span class="footer-link-arrow" aria-hidden="true">›</span>
           </a>
           <a href="https://suzuri.jp/bb_jpdao" target="_blank" rel="noopener noreferrer">
             <span class="footer-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg></span>
-            <span>ショップ</span>
+            <span data-i18n="ui.footer.shop">ショップ</span>
             <span class="footer-link-arrow" aria-hidden="true">›</span>
           </a>
           <a href="https://www.boardingbridge.org/privacy-policy" target="_blank" rel="noopener noreferrer">
             <span class="footer-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-2.8 8-7 10-4.2-2-7-5.5-7-10V6l7-3Z"></path><path d="M9.5 12.5l1.7 1.7 3.5-4"></path></svg></span>
-            <span>プライバシーポリシー</span>
+            <span data-i18n="ui.footer.privacy">プライバシーポリシー</span>
             <span class="footer-link-arrow" aria-hidden="true">›</span>
           </a>
         </nav>
       </div>
       <div class="footer-bottom">© 2026 boarding bridge. All rights reserved.</div>
     </footer>
+
+    <!-- BEGIN GENERATED SHOWCASE I18N checksum:sha256:8e3097989b22d6b3b55215652c31ca0e8e5519b4d3b8fca87b0c5b392005b7ff -->
+    <script id="showcase-i18n-data" type="application/json" data-checksum="sha256:8e3097989b22d6b3b55215652c31ca0e8e5519b4d3b8fca87b0c5b392005b7ff">
+{
+  "defaultLocale": "ja",
+  "schema": "showcase-i18n-v2",
+  "source": "submissions.yaml",
+  "submissions": {
+    "alpha-hunter-bot": {
+      "haystack": "alpha-hunter-bot alpha hunter bot 235649848781701120 00lean765 alerts low-cost-detection 低時価総額トークン初動検知 Solana low market cap tokens notification_watch missed_signal onten777 low market cap 低時価総額 nansen cli smart money screener netflow dexscreener rugcheck geckoterminal 初動検知 research token screener research smart-money netflow research token holders research token who-bought-sold Smart Money Screener一致 Smart Money Netflow一致 Smart Money holders who-bought-sold Alert / Watchlist優先度 無料データで候補を絞ってから Nansen CLI を使う。 Discord Bot 低コスト初動検知 DEXScreenerなどで候補を絞り、Nansen CLI確認済みのSolana低時価総額トークンだけ通知するBot。 Solanaの低時価総額候補は数が多く、全部を手で追うとノイズが重い。alpha hunter bot は DEXScreener、RugCheck、GeckoTerminal で候補を絞り、Nansen CLIでSmart Money反応を確認する。調査すべき候補だけをDiscord通知で受け取りたい時に使う。 無料/低コストな外部スクリーニングで候補を絞り、Nansen CLI確認に進めるトークンだけを選ぶためのBotです。 検知する DEXScreener、RugCheck、GeckoTerminalで前処理した候補だけを見る 確認する token screener、netflow、holders、who-bought-soldの確認結果で読む 判断する スコアとSmart Money反応から深掘り対象を選ぶ DEXScreener 事前スコアリング RugCheck リスク除外 GeckoTerminal 出来高確認 Nansen CLI確認 Alert / Watchlist判定 API: Nansen CLI API: research token screener API: research smart-money netflow API: research token holders API: research token who-bought-sold Signal: Smart Money Screener一致 Signal: Smart Money Netflow一致 Signal: Smart Money holders Signal: who-bought-sold Signal: Alert / Watchlist優先度 DEXScreener、RugCheck、GeckoTerminalでNansen確認前のノイズを減らす。 Smart Money consensusをスコアに反映し、AlertとWatchlistを分ける。 /analyzeで個別トークンのNansen CLI確認を深掘りできる。 候補通知を受け取る 4層フィルタを通ったSolana低時価総額候補をDiscordで確認する。 Nansen CLI確認を見る token screener、smart-money netflow、holders、who-bought-soldの確認結果で候補の強さを読む。 追う候補を選ぶ AlertとWatchlistの違いを見て、詳細調査する対象を決める。 Low-cost early signal detection Early low-cap token detection A bot that filters Solana low-cap candidates with DEXScreener and other tools, then alerts only Nansen CLI-checked tokens. low cap tokens early detection Solana low-cap candidates are numerous, and tracking all of them manually creates heavy noise. alpha hunter bot filters candidates with DEXScreener, RugCheck, and GeckoTerminal, then checks Smart Money reactions with Nansen CLI. Use it when you want Discord alerts only for candidates worth investigating. A bot for narrowing candidates with free or low-cost external screening and keeping only tokens worth checking with Nansen CLI. Detect View only candidates prefiltered by DEXScreener, RugCheck, and GeckoTerminal Verify Read checks from token screener, netflow, holders, and who-bought-sold Decide Choose deep-dive targets from scores and Smart Money reactions DEXScreener pre-scoring RugCheck risk exclusion GeckoTerminal volume check Nansen CLI verification Alert / Watchlist decision Signal: Smart Money Screener match Signal: Smart Money Netflow match Signal: Alert / Watchlist priority Reduces noise before Nansen checks with DEXScreener, RugCheck, and GeckoTerminal. Reflects Smart Money consensus in the score and separates Alert from Watchlist. Allows deeper Nansen CLI checks for individual tokens with /analyze. Receive candidate alerts Check Solana low-cap candidates that passed the four-layer filter in Discord. Review Nansen CLI checks Read token screener, smart-money netflow, holders, and who-bought-sold results to judge candidate strength. Choose candidates to follow Use the Alert and Watchlist distinction to decide which tokens deserve deeper research. 低成本早期信号检测 低市值代币早期检测 先用DEXScreener等工具筛选Solana低市值候选，再只通知已通过Nansen CLI确认的代币。 低市值代币 早期信号 Solana 低市值候选很多，全部手动追踪会带来大量噪声。alpha hunter bot 先用 DEXScreener、RugCheck、GeckoTerminal 筛选，再用 Nansen CLI 确认 Smart Money 反应。适合只想在 Discord 接收值得调查候选时使用。 用免费或低成本外部筛选缩小候选范围，只保留值得进入 Nansen CLI 确认的代币。 检测 只查看经过 DEXScreener、RugCheck、GeckoTerminal 预处理的候选 确认 阅读 token screener、netflow、holders、who-bought-sold 的确认结果 判断 根据分数和 Smart Money 反应选择深挖对象 DEXScreener 预评分 RugCheck 风险排除 GeckoTerminal 成交量确认 Nansen CLI 确认 Alert / Watchlist 判定 Signal: Smart Money Screener 匹配 Signal: Smart Money Netflow 匹配 Signal: Alert / Watchlist 优先级 在 Nansen 确认前用 DEXScreener、RugCheck、GeckoTerminal 减少噪声。 把 Smart Money consensus 反映到分数中，并区分 Alert 与 Watchlist。 可用 /analyze 对单个代币进行 Nansen CLI 深挖。 接收候选通知 在 Discord 查看通过四层过滤的 Solana 低市值候选。 查看 Nansen CLI 确认 阅读 token screener、smart-money netflow、holders、who-bought-sold 结果，判断候选强度。 选择追踪候选 根据 Alert 和 Watchlist 的区别，决定要详细调查的对象。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "DEXScreener pre-scoring",
+            "RugCheck risk exclusion",
+            "GeckoTerminal volume check",
+            "Nansen CLI verification",
+            "Alert / Watchlist decision"
+          ],
+          "card_summary": "A bot that filters Solana low-cap candidates with DEXScreener and other tools, then alerts only Nansen CLI-checked tokens.",
+          "category_label": "Low-cost early signal detection",
+          "detail_intro": "Solana low-cap candidates are numerous, and tracking all of them manually creates heavy noise. alpha hunter bot filters candidates with DEXScreener, RugCheck, and GeckoTerminal, then checks Smart Money reactions with Nansen CLI. Use it when you want Discord alerts only for candidates worth investigating.",
+          "highlights": [
+            "Reduces noise before Nansen checks with DEXScreener, RugCheck, and GeckoTerminal.",
+            "Reflects Smart Money consensus in the score and separates Alert from Watchlist.",
+            "Allows deeper Nansen CLI checks for individual tokens with /analyze."
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research token screener",
+            "API: research smart-money netflow",
+            "API: research token holders",
+            "API: research token who-bought-sold",
+            "Signal: Smart Money Screener match",
+            "Signal: Smart Money Netflow match",
+            "Signal: Smart Money holders",
+            "Signal: who-bought-sold",
+            "Signal: Alert / Watchlist priority"
+          ],
+          "objective_body": "A bot for narrowing candidates with free or low-cost external screening and keeping only tokens worth checking with Nansen CLI.",
+          "role_label": "Early low-cap token detection",
+          "scene_points": [
+            {
+              "body": "View only candidates prefiltered by DEXScreener, RugCheck, and GeckoTerminal",
+              "title": "Detect"
+            },
+            {
+              "body": "Read checks from token screener, netflow, holders, and who-bought-sold",
+              "title": "Verify"
+            },
+            {
+              "body": "Choose deep-dive targets from scores and Smart Money reactions",
+              "title": "Decide"
+            }
+          ],
+          "search_terms": [
+            "low cap tokens",
+            "early detection",
+            "Nansen CLI",
+            "DEXScreener",
+            "RugCheck"
+          ],
+          "usage_steps": [
+            {
+              "body": "Check Solana low-cap candidates that passed the four-layer filter in Discord.",
+              "title": "Receive candidate alerts"
+            },
+            {
+              "body": "Read token screener, smart-money netflow, holders, and who-bought-sold results to judge candidate strength.",
+              "title": "Review Nansen CLI checks"
+            },
+            {
+              "body": "Use the Alert and Watchlist distinction to decide which tokens deserve deeper research.",
+              "title": "Choose candidates to follow"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "DEXScreener 事前スコアリング",
+            "RugCheck リスク除外",
+            "GeckoTerminal 出来高確認",
+            "Nansen CLI確認",
+            "Alert / Watchlist判定"
+          ],
+          "card_summary": "DEXScreenerなどで候補を絞り、Nansen CLI確認済みのSolana低時価総額トークンだけ通知するBot。",
+          "category_label": "低コスト初動検知",
+          "detail_intro": "Solanaの低時価総額候補は数が多く、全部を手で追うとノイズが重い。alpha hunter bot は DEXScreener、RugCheck、GeckoTerminal で候補を絞り、Nansen CLIでSmart Money反応を確認する。調査すべき候補だけをDiscord通知で受け取りたい時に使う。",
+          "highlights": [
+            "DEXScreener、RugCheck、GeckoTerminalでNansen確認前のノイズを減らす。",
+            "Smart Money consensusをスコアに反映し、AlertとWatchlistを分ける。",
+            "/analyzeで個別トークンのNansen CLI確認を深掘りできる。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research token screener",
+            "API: research smart-money netflow",
+            "API: research token holders",
+            "API: research token who-bought-sold",
+            "Signal: Smart Money Screener一致",
+            "Signal: Smart Money Netflow一致",
+            "Signal: Smart Money holders",
+            "Signal: who-bought-sold",
+            "Signal: Alert / Watchlist優先度"
+          ],
+          "objective_body": "無料/低コストな外部スクリーニングで候補を絞り、Nansen CLI確認に進めるトークンだけを選ぶためのBotです。",
+          "role_label": "低時価総額トークン初動検知",
+          "scene_points": [
+            {
+              "body": "DEXScreener、RugCheck、GeckoTerminalで前処理した候補だけを見る",
+              "title": "検知する"
+            },
+            {
+              "body": "token screener、netflow、holders、who-bought-soldの確認結果で読む",
+              "title": "確認する"
+            },
+            {
+              "body": "スコアとSmart Money反応から深掘り対象を選ぶ",
+              "title": "判断する"
+            }
+          ],
+          "search_terms": [
+            "低時価総額",
+            "初動検知",
+            "Nansen CLI",
+            "DEXScreener",
+            "RugCheck"
+          ],
+          "usage_steps": [
+            {
+              "body": "4層フィルタを通ったSolana低時価総額候補をDiscordで確認する。",
+              "title": "候補通知を受け取る"
+            },
+            {
+              "body": "token screener、smart-money netflow、holders、who-bought-soldの確認結果で候補の強さを読む。",
+              "title": "Nansen CLI確認を見る"
+            },
+            {
+              "body": "AlertとWatchlistの違いを見て、詳細調査する対象を決める。",
+              "title": "追う候補を選ぶ"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "DEXScreener 预评分",
+            "RugCheck 风险排除",
+            "GeckoTerminal 成交量确认",
+            "Nansen CLI 确认",
+            "Alert / Watchlist 判定"
+          ],
+          "card_summary": "先用DEXScreener等工具筛选Solana低市值候选，再只通知已通过Nansen CLI确认的代币。",
+          "category_label": "低成本早期信号检测",
+          "detail_intro": "Solana 低市值候选很多，全部手动追踪会带来大量噪声。alpha hunter bot 先用 DEXScreener、RugCheck、GeckoTerminal 筛选，再用 Nansen CLI 确认 Smart Money 反应。适合只想在 Discord 接收值得调查候选时使用。",
+          "highlights": [
+            "在 Nansen 确认前用 DEXScreener、RugCheck、GeckoTerminal 减少噪声。",
+            "把 Smart Money consensus 反映到分数中，并区分 Alert 与 Watchlist。",
+            "可用 /analyze 对单个代币进行 Nansen CLI 深挖。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research token screener",
+            "API: research smart-money netflow",
+            "API: research token holders",
+            "API: research token who-bought-sold",
+            "Signal: Smart Money Screener 匹配",
+            "Signal: Smart Money Netflow 匹配",
+            "Signal: Smart Money holders",
+            "Signal: who-bought-sold",
+            "Signal: Alert / Watchlist 优先级"
+          ],
+          "objective_body": "用免费或低成本外部筛选缩小候选范围，只保留值得进入 Nansen CLI 确认的代币。",
+          "role_label": "低市值代币早期检测",
+          "scene_points": [
+            {
+              "body": "只查看经过 DEXScreener、RugCheck、GeckoTerminal 预处理的候选",
+              "title": "检测"
+            },
+            {
+              "body": "阅读 token screener、netflow、holders、who-bought-sold 的确认结果",
+              "title": "确认"
+            },
+            {
+              "body": "根据分数和 Smart Money 反应选择深挖对象",
+              "title": "判断"
+            }
+          ],
+          "search_terms": [
+            "低市值代币",
+            "早期信号",
+            "Nansen CLI",
+            "DEXScreener",
+            "RugCheck"
+          ],
+          "usage_steps": [
+            {
+              "body": "在 Discord 查看通过四层过滤的 Solana 低市值候选。",
+              "title": "接收候选通知"
+            },
+            {
+              "body": "阅读 token screener、smart-money netflow、holders、who-bought-sold 结果，判断候选强度。",
+              "title": "查看 Nansen CLI 确认"
+            },
+            {
+              "body": "根据 Alert 和 Watchlist 的区别，决定要详细调查的对象。",
+              "title": "选择追踪候选"
+            }
+          ]
+        }
+      },
+      "name": "alpha hunter bot"
+    },
+    "alphacat": {
+      "haystack": "alphacat AlphaCat🐱 707472697717686293 kumicrypto alerts smart-money-alert Smart Money買い集めアラート multi-chain altcoins notification_watch missed_signal alpha score smart money dex trades buy accumulation 買い集め 優先度付き通知 dexscreener x search smart-money/dex-trades Smart Money DEX trades 複数ウォレット買い集め 買い集め加速 Daily TOP5 Node.js Discord Bot Nansen API X search links Persistent storage Smart Moneyアラート Smart MoneyのDEX取引を監視し、複数ウォレットの買い集めをAlpha Scoreで通知するBot。 DEX取引 リアルタイム通知 Smart Money の買い集めは、単発の取引だけ見ても判断しにくい。AlphaCat は smart-money/dex-trades を定期確認し、複数ウォレットが同じアルトを買い始めた動きを Alpha Score で整理する。通知から DexScreener や X 検索へ進み、深掘りする候補を決めたい時に使う。 複数Smart Moneyの同時買いをスコア化し、通知から深掘り対象を素早く絞るためのBotです。 検知する 複数ウォレットが同じアルトを買い始めた動きをまとめる 評価する Alpha Score、買い集め加速、Daily TOP5で候補を並べる 判断する DexScreenerやX検索リンクから深掘り候補を確認する Smart Money DEX取引監視 Accumulation Alert エスカレーション通知 Daily TOP5 digest DexScreener / X 検索リンク API: smart-money/dex-trades Signal: Smart Money DEX trades Signal: 複数ウォレット買い集め Signal: Alpha Score Signal: 買い集め加速 Signal: Daily TOP5 Nansen利用はランタイムで確認できる smart-money/dex-trades に絞って説明する。 24時間のrolling activityとユニークウォレット数で同一トークンの買い集めを見る。 通常通知、エスカレーション通知、Daily TOP5 digestで優先度を分ける。 買い集め通知を見る 複数のSmart Moneyウォレットが同じアルトを買い始めた通知を受け取る。 重なりを確認する Alpha Score、ユニークウォレット数、買い集め加速で候補の強さを読む。 詳細リンクへ進む DexScreener や X 検索リンクから、追う候補をさらに確認する。 Smart Money alerts Smart Money accumulation alerts A bot that watches Smart Money DEX trades and alerts accumulation across multiple wallets with an Alpha Score. accumulation real-time alerts Smart Money accumulation is hard to judge from a single transaction. AlphaCat periodically checks smart-money/dex-trades and organizes cases where multiple wallets start buying the same alt with an Alpha Score. Use it when you want to move from alerts to DexScreener or X search and decide which candidates deserve deeper research. A bot for scoring simultaneous buying by multiple Smart Money wallets and quickly narrowing deep-dive candidates from alerts. Detect Group cases where multiple wallets start buying the same alt Evaluate Rank candidates with Alpha Score, accumulation acceleration, and Daily TOP5 Decide Check deep-dive candidates through DexScreener and X search links Smart Money DEX trade monitoring Escalation notification DexScreener / X search links Signal: Multi-wallet accumulation Signal: Accumulation acceleration Explains Nansen usage only through the runtime-confirmed smart-money/dex-trades integration. Uses 24-hour rolling activity and unique wallet count to identify accumulation in the same token. Separates priority through normal alerts, escalation alerts, and the Daily TOP5 digest. See accumulation alerts Receive alerts when multiple Smart Money wallets begin buying the same alt. Check overlap Read Alpha Score, unique wallet count, and accumulation acceleration to judge candidate strength. Open detail links Use DexScreener and X search links to continue checking candidates worth following. Smart Money预警 Smart Money集中买入预警 监控Smart Money的DEX交易，并用Alpha Score提醒多个钱包共同买入的Bot。 集中买入 DEX交易 实时提醒 Smart Money 的买入聚集很难只靠单笔交易判断。AlphaCat 定期检查 smart-money/dex-trades，并用 Alpha Score 整理多个钱包开始买入同一 alt 的动向。适合从通知跳转到 DexScreener 或 X 搜索，决定哪些候选值得深挖。 把多个 Smart Money 的同步买入打分，从通知中快速筛出深挖对象。 检测 汇总多个钱包开始买入同一 alt 的动向 评估 用 Alpha Score、买入聚集加速和 Daily TOP5 排列候选 判断 通过 DexScreener 和 X 搜索链接确认深挖候选 Smart Money DEX 交易监控 升级通知 Daily TOP5 摘要 DexScreener / X 搜索链接 Signal: 多钱包买入聚集 Signal: 买入聚集加速 Nansen 用法只说明 runtime 已确认的 smart-money/dex-trades。 用 24 小时 rolling activity 和唯一钱包数查看同一代币的买入聚集。 通过普通通知、升级通知和 Daily TOP5 digest 区分优先级。 查看买入聚集通知 当多个 Smart Money 钱包开始买入同一 alt 时接收通知。 确认重叠度 通过 Alpha Score、唯一钱包数和买入聚集加速判断候选强度。 打开详情链接 通过 DexScreener 和 X 搜索链接继续确认值得追踪的候选。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Smart Money DEX trade monitoring",
+            "Alpha Score",
+            "Accumulation Alert",
+            "Escalation notification",
+            "Daily TOP5 digest",
+            "DexScreener / X search links"
+          ],
+          "card_summary": "A bot that watches Smart Money DEX trades and alerts accumulation across multiple wallets with an Alpha Score.",
+          "category_label": "Smart Money alerts",
+          "detail_intro": "Smart Money accumulation is hard to judge from a single transaction. AlphaCat periodically checks smart-money/dex-trades and organizes cases where multiple wallets start buying the same alt with an Alpha Score. Use it when you want to move from alerts to DexScreener or X search and decide which candidates deserve deeper research.",
+          "highlights": [
+            "Explains Nansen usage only through the runtime-confirmed smart-money/dex-trades integration.",
+            "Uses 24-hour rolling activity and unique wallet count to identify accumulation in the same token.",
+            "Separates priority through normal alerts, escalation alerts, and the Daily TOP5 digest."
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "Signal: Smart Money DEX trades",
+            "Signal: Multi-wallet accumulation",
+            "Signal: Alpha Score",
+            "Signal: Accumulation acceleration",
+            "Signal: Daily TOP5"
+          ],
+          "objective_body": "A bot for scoring simultaneous buying by multiple Smart Money wallets and quickly narrowing deep-dive candidates from alerts.",
+          "role_label": "Smart Money accumulation alerts",
+          "scene_points": [
+            {
+              "body": "Group cases where multiple wallets start buying the same alt",
+              "title": "Detect"
+            },
+            {
+              "body": "Rank candidates with Alpha Score, accumulation acceleration, and Daily TOP5",
+              "title": "Evaluate"
+            },
+            {
+              "body": "Check deep-dive candidates through DexScreener and X search links",
+              "title": "Decide"
+            }
+          ],
+          "search_terms": [
+            "smart money alerts",
+            "accumulation",
+            "Alpha Score",
+            "DEX trades",
+            "real-time alerts"
+          ],
+          "usage_steps": [
+            {
+              "body": "Receive alerts when multiple Smart Money wallets begin buying the same alt.",
+              "title": "See accumulation alerts"
+            },
+            {
+              "body": "Read Alpha Score, unique wallet count, and accumulation acceleration to judge candidate strength.",
+              "title": "Check overlap"
+            },
+            {
+              "body": "Use DexScreener and X search links to continue checking candidates worth following.",
+              "title": "Open detail links"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "Smart Money DEX取引監視",
+            "Alpha Score",
+            "Accumulation Alert",
+            "エスカレーション通知",
+            "Daily TOP5 digest",
+            "DexScreener / X 検索リンク"
+          ],
+          "card_summary": "Smart MoneyのDEX取引を監視し、複数ウォレットの買い集めをAlpha Scoreで通知するBot。",
+          "category_label": "Smart Moneyアラート",
+          "detail_intro": "Smart Money の買い集めは、単発の取引だけ見ても判断しにくい。AlphaCat は smart-money/dex-trades を定期確認し、複数ウォレットが同じアルトを買い始めた動きを Alpha Score で整理する。通知から DexScreener や X 検索へ進み、深掘りする候補を決めたい時に使う。",
+          "highlights": [
+            "Nansen利用はランタイムで確認できる smart-money/dex-trades に絞って説明する。",
+            "24時間のrolling activityとユニークウォレット数で同一トークンの買い集めを見る。",
+            "通常通知、エスカレーション通知、Daily TOP5 digestで優先度を分ける。"
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "Signal: Smart Money DEX trades",
+            "Signal: 複数ウォレット買い集め",
+            "Signal: Alpha Score",
+            "Signal: 買い集め加速",
+            "Signal: Daily TOP5"
+          ],
+          "objective_body": "複数Smart Moneyの同時買いをスコア化し、通知から深掘り対象を素早く絞るためのBotです。",
+          "role_label": "Smart Money買い集めアラート",
+          "scene_points": [
+            {
+              "body": "複数ウォレットが同じアルトを買い始めた動きをまとめる",
+              "title": "検知する"
+            },
+            {
+              "body": "Alpha Score、買い集め加速、Daily TOP5で候補を並べる",
+              "title": "評価する"
+            },
+            {
+              "body": "DexScreenerやX検索リンクから深掘り候補を確認する",
+              "title": "判断する"
+            }
+          ],
+          "search_terms": [
+            "Smart Money",
+            "買い集め",
+            "Alpha Score",
+            "DEX取引",
+            "リアルタイム通知"
+          ],
+          "usage_steps": [
+            {
+              "body": "複数のSmart Moneyウォレットが同じアルトを買い始めた通知を受け取る。",
+              "title": "買い集め通知を見る"
+            },
+            {
+              "body": "Alpha Score、ユニークウォレット数、買い集め加速で候補の強さを読む。",
+              "title": "重なりを確認する"
+            },
+            {
+              "body": "DexScreener や X 検索リンクから、追う候補をさらに確認する。",
+              "title": "詳細リンクへ進む"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "Smart Money DEX 交易监控",
+            "Alpha Score",
+            "Accumulation Alert",
+            "升级通知",
+            "Daily TOP5 摘要",
+            "DexScreener / X 搜索链接"
+          ],
+          "card_summary": "监控Smart Money的DEX交易，并用Alpha Score提醒多个钱包共同买入的Bot。",
+          "category_label": "Smart Money预警",
+          "detail_intro": "Smart Money 的买入聚集很难只靠单笔交易判断。AlphaCat 定期检查 smart-money/dex-trades，并用 Alpha Score 整理多个钱包开始买入同一 alt 的动向。适合从通知跳转到 DexScreener 或 X 搜索，决定哪些候选值得深挖。",
+          "highlights": [
+            "Nansen 用法只说明 runtime 已确认的 smart-money/dex-trades。",
+            "用 24 小时 rolling activity 和唯一钱包数查看同一代币的买入聚集。",
+            "通过普通通知、升级通知和 Daily TOP5 digest 区分优先级。"
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "Signal: Smart Money DEX trades",
+            "Signal: 多钱包买入聚集",
+            "Signal: Alpha Score",
+            "Signal: 买入聚集加速",
+            "Signal: Daily TOP5"
+          ],
+          "objective_body": "把多个 Smart Money 的同步买入打分，从通知中快速筛出深挖对象。",
+          "role_label": "Smart Money集中买入预警",
+          "scene_points": [
+            {
+              "body": "汇总多个钱包开始买入同一 alt 的动向",
+              "title": "检测"
+            },
+            {
+              "body": "用 Alpha Score、买入聚集加速和 Daily TOP5 排列候选",
+              "title": "评估"
+            },
+            {
+              "body": "通过 DexScreener 和 X 搜索链接确认深挖候选",
+              "title": "判断"
+            }
+          ],
+          "search_terms": [
+            "Smart Money预警",
+            "集中买入",
+            "Alpha Score",
+            "DEX交易",
+            "实时提醒"
+          ],
+          "usage_steps": [
+            {
+              "body": "当多个 Smart Money 钱包开始买入同一 alt 时接收通知。",
+              "title": "查看买入聚集通知"
+            },
+            {
+              "body": "通过 Alpha Score、唯一钱包数和买入聚集加速判断候选强度。",
+              "title": "确认重叠度"
+            },
+            {
+              "body": "通过 DexScreener 和 X 搜索链接继续确认值得追踪的候选。",
+              "title": "打开详情链接"
+            }
+          ]
+        }
+      },
+      "name": "AlphaCat🐱"
+    },
+    "bb-nansenbot": {
+      "haystack": "bb-nansenbot rien9612 rien_nft alerts wallet-tracking BSC大口wallet日次監視 BSC BSC pump tokens notification_watch missed_signal wallet cohort current-balance who-bought-sold token-screener pnl-summary 大口wallet 新規買い 日次監視 tgm/who-bought-sold profiler/address/current-balance tgm/flow-intelligence profiler pnl-summary Nansen Smart Money 24h netflow rien-SM新規買い rien-SM TOP層 BSC pump前の仕込み候補 label別net flow Discord Bot Nansen API Daily batch Wallet cohort analysis ウォレット追跡 BSCの独自rien-SMとNansen Smart Moneyを日次で並べ、新規買いと保有集中を読むBot。 日次レポート 保有集中 BSCのpumpは、気づいた時には先に仕込まれた後になりやすい。bb-nansenbot は Nansen Smart Money と独自rien-SMを並べ、日次レポートで新規買い、保有集中、TOP層の動きを見る。話題のtokenが出た時に、rien-SMが先に入っているかを確認したい時に使う。 BSCで先に入ったSmart Money群を日次で見つけ、pump前の仕込み候補かどうかを確認するためのBotです。 検知する Nansen Smart Moneyと独自rien-SMを並べて確認する 確認する 新規買い、保有集中、TOP層の動きを読む 把握する label別net flowや経験別内訳で深掘りする 日次BSCレポート 独自rien-SM pool 新規買い検出 token-checker Deep flow表示 API: token-screener API: tgm/who-bought-sold API: profiler/address/current-balance API: tgm/flow-intelligence API: profiler pnl-summary Signal: Nansen Smart Money 24h netflow Signal: rien-SM新規買い Signal: rien-SM TOP層 Signal: BSC pump前の仕込み候補 Signal: label別net flow Nansen Smart Moneyと独自rien-SMを同じ画面で比較する。 rien-SMの新規買いを日次レポートで検出する。 個別アドレスを出さず、経験別の集計として見せる。 日次レポートを見る Nansen-SM上位、rien-SM保有、rien-SM新規買いをまとめて確認する。 個別tokenを確認する /token-checkerで話題のsymbolやcontract addressを見て、買い手と保有集中を読む。 深掘りする Deep表示でlabel別net flowや経験別内訳を見て、追跡するか見送るか判断する。 Wallet tracking Daily BSC whale wallet monitoring A bot that compares custom rien-SM wallets with Nansen Smart Money each day to spot new buys and concentrated holdings. daily report new buys holding concentration On BSC, pumps can already be seeded by the time they become visible. bb-nansenbot compares Nansen Smart Money with a custom rien-SM cohort and shows new buys, holding concentration, and top-tier movement in a daily report. Use it when a talked-about token appears and you want to know whether rien-SM entered early. A bot for finding Smart Money groups that entered early on BSC and checking whether a token may be a pre-pump accumulation candidate. Detect Compare Nansen Smart Money with the custom rien-SM pool Verify Read new buys, holding concentration, and top-tier movement Understand Dig into label-level net flow and experience-based breakdowns Daily BSC report Custom rien-SM pool New buy detection Deep flow display Signal: rien-SM new buy Signal: rien-SM top tier Signal: BSC pre-pump accumulation candidate Signal: label-level net flow Compares Nansen Smart Money and custom rien-SM in the same view. Detects rien-SM new buys in the daily report. Shows experience-based aggregates instead of exposing individual addresses. Read the daily report Check Nansen-SM leaders, rien-SM holdings, and rien-SM new buys together. Check an individual token Use /token-checker for a talked-about symbol or contract address, then read buyers and holding concentration. Dig deeper Use the Deep view to review label-level net flow and experience-based breakdowns, then decide whether to track or skip. 钱包追踪 BSC大户钱包日监控 每日对比自定义rien-SM和Nansen Smart Money，观察新买入和持仓集中度的Bot。 日报 新买入 持仓集中 BSC 的 pump 往往在你注意到时已经有人提前埋伏。bb-nansenbot 将 Nansen Smart Money 与自定义 rien-SM 并排展示，在日报中查看新买入、持仓集中度和 TOP 层动向。适合在热门 token 出现时确认 rien-SM 是否提前进入。 在 BSC 上按日发现提前进入的 Smart Money 群体，并确认是否可能是 pump 前的埋伏候选。 检测 并排确认 Nansen Smart Money 和自定义 rien-SM 确认 阅读新买入、持仓集中度和 TOP 层动向 理解 通过 label 级 net flow 和经验分组继续深挖 BSC 日报 自定义 rien-SM pool 新买入检测 Deep flow 展示 Signal: rien-SM 新买入 Signal: rien-SM TOP 层 Signal: BSC pump 前埋伏候选 Signal: label 级 net flow 在同一视图比较 Nansen Smart Money 和自定义 rien-SM。 通过日报检测 rien-SM 的新买入。 不暴露单个地址，而是按经验分组展示汇总。 查看日报 一起确认 Nansen-SM 上位、rien-SM 持仓和 rien-SM 新买入。 确认单个 token 用 /token-checker 查看热门 symbol 或 contract address，阅读买家和持仓集中度。 继续深挖 在 Deep 展示中查看 label 级 net flow 和经验分组，判断继续追踪还是放弃。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Daily BSC report",
+            "Custom rien-SM pool",
+            "New buy detection",
+            "token-checker",
+            "Deep flow display"
+          ],
+          "card_summary": "A bot that compares custom rien-SM wallets with Nansen Smart Money each day to spot new buys and concentrated holdings.",
+          "category_label": "Wallet tracking",
+          "detail_intro": "On BSC, pumps can already be seeded by the time they become visible. bb-nansenbot compares Nansen Smart Money with a custom rien-SM cohort and shows new buys, holding concentration, and top-tier movement in a daily report. Use it when a talked-about token appears and you want to know whether rien-SM entered early.",
+          "highlights": [
+            "Compares Nansen Smart Money and custom rien-SM in the same view.",
+            "Detects rien-SM new buys in the daily report.",
+            "Shows experience-based aggregates instead of exposing individual addresses."
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "API: tgm/who-bought-sold",
+            "API: profiler/address/current-balance",
+            "API: tgm/flow-intelligence",
+            "API: profiler pnl-summary",
+            "Signal: Nansen Smart Money 24h netflow",
+            "Signal: rien-SM new buy",
+            "Signal: rien-SM top tier",
+            "Signal: BSC pre-pump accumulation candidate",
+            "Signal: label-level net flow"
+          ],
+          "objective_body": "A bot for finding Smart Money groups that entered early on BSC and checking whether a token may be a pre-pump accumulation candidate.",
+          "role_label": "Daily BSC whale wallet monitoring",
+          "scene_points": [
+            {
+              "body": "Compare Nansen Smart Money with the custom rien-SM pool",
+              "title": "Detect"
+            },
+            {
+              "body": "Read new buys, holding concentration, and top-tier movement",
+              "title": "Verify"
+            },
+            {
+              "body": "Dig into label-level net flow and experience-based breakdowns",
+              "title": "Understand"
+            }
+          ],
+          "search_terms": [
+            "BSC",
+            "wallet tracking",
+            "daily report",
+            "new buys",
+            "holding concentration"
+          ],
+          "usage_steps": [
+            {
+              "body": "Check Nansen-SM leaders, rien-SM holdings, and rien-SM new buys together.",
+              "title": "Read the daily report"
+            },
+            {
+              "body": "Use /token-checker for a talked-about symbol or contract address, then read buyers and holding concentration.",
+              "title": "Check an individual token"
+            },
+            {
+              "body": "Use the Deep view to review label-level net flow and experience-based breakdowns, then decide whether to track or skip.",
+              "title": "Dig deeper"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "日次BSCレポート",
+            "独自rien-SM pool",
+            "新規買い検出",
+            "token-checker",
+            "Deep flow表示"
+          ],
+          "card_summary": "BSCの独自rien-SMとNansen Smart Moneyを日次で並べ、新規買いと保有集中を読むBot。",
+          "category_label": "ウォレット追跡",
+          "detail_intro": "BSCのpumpは、気づいた時には先に仕込まれた後になりやすい。bb-nansenbot は Nansen Smart Money と独自rien-SMを並べ、日次レポートで新規買い、保有集中、TOP層の動きを見る。話題のtokenが出た時に、rien-SMが先に入っているかを確認したい時に使う。",
+          "highlights": [
+            "Nansen Smart Moneyと独自rien-SMを同じ画面で比較する。",
+            "rien-SMの新規買いを日次レポートで検出する。",
+            "個別アドレスを出さず、経験別の集計として見せる。"
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "API: tgm/who-bought-sold",
+            "API: profiler/address/current-balance",
+            "API: tgm/flow-intelligence",
+            "API: profiler pnl-summary",
+            "Signal: Nansen Smart Money 24h netflow",
+            "Signal: rien-SM新規買い",
+            "Signal: rien-SM TOP層",
+            "Signal: BSC pump前の仕込み候補",
+            "Signal: label別net flow"
+          ],
+          "objective_body": "BSCで先に入ったSmart Money群を日次で見つけ、pump前の仕込み候補かどうかを確認するためのBotです。",
+          "role_label": "BSC大口wallet日次監視",
+          "scene_points": [
+            {
+              "body": "Nansen Smart Moneyと独自rien-SMを並べて確認する",
+              "title": "検知する"
+            },
+            {
+              "body": "新規買い、保有集中、TOP層の動きを読む",
+              "title": "確認する"
+            },
+            {
+              "body": "label別net flowや経験別内訳で深掘りする",
+              "title": "把握する"
+            }
+          ],
+          "search_terms": [
+            "BSC",
+            "ウォレット追跡",
+            "日次レポート",
+            "新規買い",
+            "保有集中"
+          ],
+          "usage_steps": [
+            {
+              "body": "Nansen-SM上位、rien-SM保有、rien-SM新規買いをまとめて確認する。",
+              "title": "日次レポートを見る"
+            },
+            {
+              "body": "/token-checkerで話題のsymbolやcontract addressを見て、買い手と保有集中を読む。",
+              "title": "個別tokenを確認する"
+            },
+            {
+              "body": "Deep表示でlabel別net flowや経験別内訳を見て、追跡するか見送るか判断する。",
+              "title": "深掘りする"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "BSC 日报",
+            "自定义 rien-SM pool",
+            "新买入检测",
+            "token-checker",
+            "Deep flow 展示"
+          ],
+          "card_summary": "每日对比自定义rien-SM和Nansen Smart Money，观察新买入和持仓集中度的Bot。",
+          "category_label": "钱包追踪",
+          "detail_intro": "BSC 的 pump 往往在你注意到时已经有人提前埋伏。bb-nansenbot 将 Nansen Smart Money 与自定义 rien-SM 并排展示，在日报中查看新买入、持仓集中度和 TOP 层动向。适合在热门 token 出现时确认 rien-SM 是否提前进入。",
+          "highlights": [
+            "在同一视图比较 Nansen Smart Money 和自定义 rien-SM。",
+            "通过日报检测 rien-SM 的新买入。",
+            "不暴露单个地址，而是按经验分组展示汇总。"
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "API: tgm/who-bought-sold",
+            "API: profiler/address/current-balance",
+            "API: tgm/flow-intelligence",
+            "API: profiler pnl-summary",
+            "Signal: Nansen Smart Money 24h netflow",
+            "Signal: rien-SM 新买入",
+            "Signal: rien-SM TOP 层",
+            "Signal: BSC pump 前埋伏候选",
+            "Signal: label 级 net flow"
+          ],
+          "objective_body": "在 BSC 上按日发现提前进入的 Smart Money 群体，并确认是否可能是 pump 前的埋伏候选。",
+          "role_label": "BSC大户钱包日监控",
+          "scene_points": [
+            {
+              "body": "并排确认 Nansen Smart Money 和自定义 rien-SM",
+              "title": "检测"
+            },
+            {
+              "body": "阅读新买入、持仓集中度和 TOP 层动向",
+              "title": "确认"
+            },
+            {
+              "body": "通过 label 级 net flow 和经验分组继续深挖",
+              "title": "理解"
+            }
+          ],
+          "search_terms": [
+            "BSC",
+            "钱包追踪",
+            "日报",
+            "新买入",
+            "持仓集中"
+          ],
+          "usage_steps": [
+            {
+              "body": "一起确认 Nansen-SM 上位、rien-SM 持仓和 rien-SM 新买入。",
+              "title": "查看日报"
+            },
+            {
+              "body": "用 /token-checker 查看热门 symbol 或 contract address，阅读买家和持仓集中度。",
+              "title": "确认单个 token"
+            },
+            {
+              "body": "在 Deep 展示中查看 label 级 net flow 和经验分组，判断继续追踪还是放弃。",
+              "title": "继续深挖"
+            }
+          ]
+        }
+      },
+      "name": "bb-nansenbot"
+    },
+    "bb-native-alpha-radar": {
+      "haystack": "bb-native-alpha-radar bb Native Alpha Radar hanamaru73 MinerMaru73 alerts solana-radar Solana初動銘柄Radar支援 Solana pre-CA tokens active_research curiosity pre-ca radar smart money flow dex trades token screener flow intelligence 低ノイズ 初動銘柄 smart-money/netflow smart-money/dex-trades token-screener tgm/holders tgm/flow-intelligence Nansen CLI schema Smart Money netflow Smart Money DEX trade presence lowcap pool holder concentration Flow Intelligence bias rejection reasons post-alert tracking Node.js >=22 Discord Bot Native Discord REST/Gateway Nansen API Nansen CLI DexScreener gmgn Leaderboard 低ノイズRadar Solana低cap候補を低ノイズに絞り、根拠、見送り理由、追跡結果まで残せるRadar Bot。 初動検知 追跡結果 Solanaの低cap候補は数が多く、通知が増えるほど何を見るべきか分かりにくい。bb Native Alpha Radar は Nansen の netflow、DEX trades、Token Screener、holders、Flow Intelligence を使い、候補、根拠、見送り理由を同じ流れで扱う。CA拡散前の候補を少数に絞って追いたい時に使う。 Solana低capの大量候補を、Nansen根拠、見送り理由、通知後の結果まで含めて少数のRadar Callに絞るためのBotです。 検知する netflow、DEX trades、Token Screener、holders、Flow Intelligenceで候補を減らす 確認する Flow / Whyで根拠、holder concentration、biasを読む 判断する rejections、post-alert tracking、leaderboardで後から振り返る Solana低cap Radar Radar Call保存 Flow / Why検証 見送り理由 leaderboard / stats API: smart-money/netflow API: smart-money/dex-trades API: token-screener API: tgm/holders API: tgm/flow-intelligence API: Nansen CLI schema Signal: Smart Money netflow Signal: Smart Money DEX trade presence Signal: lowcap pool Signal: holder concentration Signal: Flow Intelligence bias Signal: rejection reasons Signal: post-alert tracking Nansen RESTとCLI schema確認を分け、候補抽出と検証の根拠を整理している。 候補だけでなく、見送り理由と通知後のmcap追跡も残す。 登録済みslash commandは /radar、/flow、/why、/leaderboard、/rejections、/stats、/health。 Radarで候補を見る 低ノイズに絞られたSolana低cap候補と保存されたRadar Callを確認する。 Flow / Whyで根拠を見る Smart Money netflow、DEX trade presence、holder concentration、Flow Intelligence biasを読む。 結果と見送り理由を振り返る post-alert tracking、leaderboard、rejectionsで判断の結果を見直す。 Low-noise radar Solana early-token radar A radar bot that narrows Solana low-cap candidates with low noise and preserves evidence, rejection reasons, and tracking results. Solana radar early token detection low noise Solana low-cap candidates are numerous, and more notifications can make it harder to know what matters. bb Native Alpha Radar uses Nansen netflow, DEX trades, Token Screener, holders, and Flow Intelligence to handle candidates, evidence, and rejection reasons in one flow. Use it when you want to reduce pre-CA-spread candidates to a small set worth tracking. A bot for reducing large Solana low-cap candidate pools into a small set of Radar Calls with Nansen evidence, rejection reasons, and post-alert results. Detect Reduce candidates with netflow, DEX trades, Token Screener, holders, and Flow Intelligence Verify Read evidence, holder concentration, and bias through Flow / Why Decide Review later with rejections, post-alert tracking, and leaderboard Solana low-cap Radar Radar Call storage Flow / Why verification Separates Nansen REST usage from CLI schema checks and organizes evidence for candidate extraction and verification. Stores not only candidates but also rejection reasons and post-alert market-cap tracking. Registered slash commands are /radar, /flow, /why, /leaderboard, /rejections, /stats, and /health. View candidates in Radar Check low-noise Solana low-cap candidates and saved Radar Calls. Review evidence in Flow / Why Read Smart Money netflow, DEX trade presence, holder concentration, and Flow Intelligence bias. Review results and rejections Use post-alert tracking, leaderboard, and rejections to revisit decisions. 低噪声雷达 Solana早期标的雷达 低噪声筛选Solana低市值候选，并保留依据、放弃理由和后续追踪结果的Radar Bot。 Solana雷达 早期标的 低噪声 放弃理由 追踪结果 Solana 低市值候选很多，通知越多越难判断该看什么。bb Native Alpha Radar 使用 Nansen 的 netflow、DEX trades、Token Screener、holders、Flow Intelligence，把候选、依据和放弃理由放在同一流程中处理。适合在 CA 扩散前把候选压缩到少量可追踪对象。 把大量 Solana 低市值候选，连同 Nansen 依据、放弃理由和通知后的结果，一起压缩成少量 Radar Call。 检测 用 netflow、DEX trades、Token Screener、holders、Flow Intelligence 减少候选 确认 通过 Flow / Why 阅读依据、holder concentration 和 bias 判断 用 rejections、post-alert tracking、leaderboard 事后复盘 Solana 低市值 Radar Radar Call 保存 Flow / Why 验证 区分 Nansen REST 和 CLI schema 确认，整理候选抽取与验证依据。 不仅保存候选，也保存放弃理由和通知后的 mcap 追踪。 已注册 slash command 包括 /radar、/flow、/why、/leaderboard、/rejections、/stats、/health。 在 Radar 查看候选 确认低噪声筛选后的 Solana 低市值候选和保存的 Radar Call。 用 Flow / Why 查看依据 阅读 Smart Money netflow、DEX trade presence、holder concentration、Flow Intelligence bias。 复盘结果和放弃理由 通过 post-alert tracking、leaderboard、rejections 回看判断结果。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Solana low-cap Radar",
+            "Radar Call storage",
+            "Flow / Why verification",
+            "Rejection reasons",
+            "post-alert tracking",
+            "leaderboard / stats"
+          ],
+          "card_summary": "A radar bot that narrows Solana low-cap candidates with low noise and preserves evidence, rejection reasons, and tracking results.",
+          "category_label": "Low-noise radar",
+          "detail_intro": "Solana low-cap candidates are numerous, and more notifications can make it harder to know what matters. bb Native Alpha Radar uses Nansen netflow, DEX trades, Token Screener, holders, and Flow Intelligence to handle candidates, evidence, and rejection reasons in one flow. Use it when you want to reduce pre-CA-spread candidates to a small set worth tracking.",
+          "highlights": [
+            "Separates Nansen REST usage from CLI schema checks and organizes evidence for candidate extraction and verification.",
+            "Stores not only candidates but also rejection reasons and post-alert market-cap tracking.",
+            "Registered slash commands are /radar, /flow, /why, /leaderboard, /rejections, /stats, and /health."
+          ],
+          "nansen_tags": [
+            "API: smart-money/netflow",
+            "API: smart-money/dex-trades",
+            "API: token-screener",
+            "API: tgm/holders",
+            "API: tgm/flow-intelligence",
+            "API: Nansen CLI schema",
+            "Signal: Smart Money netflow",
+            "Signal: Smart Money DEX trade presence",
+            "Signal: lowcap pool",
+            "Signal: holder concentration",
+            "Signal: Flow Intelligence bias",
+            "Signal: rejection reasons",
+            "Signal: post-alert tracking"
+          ],
+          "objective_body": "A bot for reducing large Solana low-cap candidate pools into a small set of Radar Calls with Nansen evidence, rejection reasons, and post-alert results.",
+          "role_label": "Solana early-token radar",
+          "scene_points": [
+            {
+              "body": "Reduce candidates with netflow, DEX trades, Token Screener, holders, and Flow Intelligence",
+              "title": "Detect"
+            },
+            {
+              "body": "Read evidence, holder concentration, and bias through Flow / Why",
+              "title": "Verify"
+            },
+            {
+              "body": "Review later with rejections, post-alert tracking, and leaderboard",
+              "title": "Decide"
+            }
+          ],
+          "search_terms": [
+            "Solana radar",
+            "early token detection",
+            "low noise",
+            "rejection reasons",
+            "post-alert tracking"
+          ],
+          "usage_steps": [
+            {
+              "body": "Check low-noise Solana low-cap candidates and saved Radar Calls.",
+              "title": "View candidates in Radar"
+            },
+            {
+              "body": "Read Smart Money netflow, DEX trade presence, holder concentration, and Flow Intelligence bias.",
+              "title": "Review evidence in Flow / Why"
+            },
+            {
+              "body": "Use post-alert tracking, leaderboard, and rejections to revisit decisions.",
+              "title": "Review results and rejections"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "Solana低cap Radar",
+            "Radar Call保存",
+            "Flow / Why検証",
+            "見送り理由",
+            "post-alert tracking",
+            "leaderboard / stats"
+          ],
+          "card_summary": "Solana低cap候補を低ノイズに絞り、根拠、見送り理由、追跡結果まで残せるRadar Bot。",
+          "category_label": "低ノイズRadar",
+          "detail_intro": "Solanaの低cap候補は数が多く、通知が増えるほど何を見るべきか分かりにくい。bb Native Alpha Radar は Nansen の netflow、DEX trades、Token Screener、holders、Flow Intelligence を使い、候補、根拠、見送り理由を同じ流れで扱う。CA拡散前の候補を少数に絞って追いたい時に使う。",
+          "highlights": [
+            "Nansen RESTとCLI schema確認を分け、候補抽出と検証の根拠を整理している。",
+            "候補だけでなく、見送り理由と通知後のmcap追跡も残す。",
+            "登録済みslash commandは /radar、/flow、/why、/leaderboard、/rejections、/stats、/health。"
+          ],
+          "nansen_tags": [
+            "API: smart-money/netflow",
+            "API: smart-money/dex-trades",
+            "API: token-screener",
+            "API: tgm/holders",
+            "API: tgm/flow-intelligence",
+            "API: Nansen CLI schema",
+            "Signal: Smart Money netflow",
+            "Signal: Smart Money DEX trade presence",
+            "Signal: lowcap pool",
+            "Signal: holder concentration",
+            "Signal: Flow Intelligence bias",
+            "Signal: rejection reasons",
+            "Signal: post-alert tracking"
+          ],
+          "objective_body": "Solana低capの大量候補を、Nansen根拠、見送り理由、通知後の結果まで含めて少数のRadar Callに絞るためのBotです。",
+          "role_label": "Solana初動銘柄Radar支援",
+          "scene_points": [
+            {
+              "body": "netflow、DEX trades、Token Screener、holders、Flow Intelligenceで候補を減らす",
+              "title": "検知する"
+            },
+            {
+              "body": "Flow / Whyで根拠、holder concentration、biasを読む",
+              "title": "確認する"
+            },
+            {
+              "body": "rejections、post-alert tracking、leaderboardで後から振り返る",
+              "title": "判断する"
+            }
+          ],
+          "search_terms": [
+            "Solana",
+            "初動検知",
+            "低ノイズ",
+            "Radar",
+            "追跡結果"
+          ],
+          "usage_steps": [
+            {
+              "body": "低ノイズに絞られたSolana低cap候補と保存されたRadar Callを確認する。",
+              "title": "Radarで候補を見る"
+            },
+            {
+              "body": "Smart Money netflow、DEX trade presence、holder concentration、Flow Intelligence biasを読む。",
+              "title": "Flow / Whyで根拠を見る"
+            },
+            {
+              "body": "post-alert tracking、leaderboard、rejectionsで判断の結果を見直す。",
+              "title": "結果と見送り理由を振り返る"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "Solana 低市值 Radar",
+            "Radar Call 保存",
+            "Flow / Why 验证",
+            "放弃理由",
+            "post-alert tracking",
+            "leaderboard / stats"
+          ],
+          "card_summary": "低噪声筛选Solana低市值候选，并保留依据、放弃理由和后续追踪结果的Radar Bot。",
+          "category_label": "低噪声雷达",
+          "detail_intro": "Solana 低市值候选很多，通知越多越难判断该看什么。bb Native Alpha Radar 使用 Nansen 的 netflow、DEX trades、Token Screener、holders、Flow Intelligence，把候选、依据和放弃理由放在同一流程中处理。适合在 CA 扩散前把候选压缩到少量可追踪对象。",
+          "highlights": [
+            "区分 Nansen REST 和 CLI schema 确认，整理候选抽取与验证依据。",
+            "不仅保存候选，也保存放弃理由和通知后的 mcap 追踪。",
+            "已注册 slash command 包括 /radar、/flow、/why、/leaderboard、/rejections、/stats、/health。"
+          ],
+          "nansen_tags": [
+            "API: smart-money/netflow",
+            "API: smart-money/dex-trades",
+            "API: token-screener",
+            "API: tgm/holders",
+            "API: tgm/flow-intelligence",
+            "API: Nansen CLI schema",
+            "Signal: Smart Money netflow",
+            "Signal: Smart Money DEX trade presence",
+            "Signal: lowcap pool",
+            "Signal: holder concentration",
+            "Signal: Flow Intelligence bias",
+            "Signal: rejection reasons",
+            "Signal: post-alert tracking"
+          ],
+          "objective_body": "把大量 Solana 低市值候选，连同 Nansen 依据、放弃理由和通知后的结果，一起压缩成少量 Radar Call。",
+          "role_label": "Solana早期标的雷达",
+          "scene_points": [
+            {
+              "body": "用 netflow、DEX trades、Token Screener、holders、Flow Intelligence 减少候选",
+              "title": "检测"
+            },
+            {
+              "body": "通过 Flow / Why 阅读依据、holder concentration 和 bias",
+              "title": "确认"
+            },
+            {
+              "body": "用 rejections、post-alert tracking、leaderboard 事后复盘",
+              "title": "判断"
+            }
+          ],
+          "search_terms": [
+            "Solana雷达",
+            "早期标的",
+            "低噪声",
+            "放弃理由",
+            "追踪结果"
+          ],
+          "usage_steps": [
+            {
+              "body": "确认低噪声筛选后的 Solana 低市值候选和保存的 Radar Call。",
+              "title": "在 Radar 查看候选"
+            },
+            {
+              "body": "阅读 Smart Money netflow、DEX trade presence、holder concentration、Flow Intelligence bias。",
+              "title": "用 Flow / Why 查看依据"
+            },
+            {
+              "body": "通过 post-alert tracking、leaderboard、rejections 回看判断结果。",
+              "title": "复盘结果和放弃理由"
+            }
+          ]
+        }
+      },
+      "name": "bb Native Alpha Radar"
+    },
+    "dd-signal-bot": {
+      "haystack": "dd-signal-bot dd Signal Bot unse0615 2TCjJLAeQQ36559 alerts signal-training Solanaミーム検出とエアトレードPDCA Solana meme coins notification_watch missed_signal bb-meme-edge kuontasae paper trading auto-tuning ranking エアトレード 成績追跡 pdca Nansen CLI research smart-money netflow research tgm token-information research tgm flow-intelligence research tgm holders research tgm who-bought-sold research smart-money dex-trades Smart Money netflow Flow/MCap trader count holder risk buyer/seller balance paper pick performance Smart Wallet Quality Auto-Tuning補正 Node.js TypeScript Discord Bot DexScreener SQLite optional PostgreSQL 検出・検証 Solanaミーム候補を検出し、エアトレード結果とAuto-Tuningで検出基準を育てるBot。 Solanaミーム Solanaミーム候補は見つけるだけでは、次の判断基準が育ちにくい。dd Signal Bot は Nansen CLI とDexScreenerで候補を絞り、Conviction、エアIN、Watchの反応と成績を同じ流れで追う。保存したwallet観測と後追いperformanceをSmart Wallet PDCAやAuto-Tuningに回し、どのシグナルが効いたのかを参加者と振り返りたい時に使う。 ミーム候補の発見で終わらせず、反応、paper pick、結果を残してシグナル精度を育てるためのBotです。 検証する AlertカードからConviction、エアIN、Watchの反応を残す 記録する paper picks、成績、leaderboardで結果を見る 改善する Smart Wallet PDCAとAuto-Tuningで次回Alertの評価を調整する Solana meme候補検出 Alertカード paper picks /my /leaderboard /meme-recap /meme-results Smart Wallet PDCA API: Nansen CLI API: research smart-money netflow API: research tgm token-information API: research tgm flow-intelligence API: research tgm holders API: research tgm who-bought-sold API: research smart-money dex-trades Signal: Smart Money netflow Signal: Flow/MCap Signal: trader count Signal: holder risk Signal: buyer/seller balance Signal: paper pick performance Signal: Smart Wallet Quality Signal: Auto-Tuning補正 Nansen CLIのnetflowとTGM系深掘りを、候補抽出とAlertカードに使う。 Conviction、エアIN、Watchのbutton反応で非売買の検証ログを作る。 Smart Wallet PDCAで保存済みwallet観測と後追いperformanceを結びつける。 Auto-TuningはHard Gateを変えず、保存済み成績をFinal Scoreへ小幅に反映する。 Alertカードを見る Flow/MCap、trader count、holder risk、buyer/seller balanceを候補カードで確認する。 Conviction / エアIN / Watchを選ぶ 候補への反応を残し、paper pickとして検証対象を管理する。 成績を振り返る /my、/leaderboard、/meme-recap、/meme-resultsで結果を見て、保存済み成績を次回Alert評価に活かす。 Detection & review Solana meme detection and paper-trade PDCA A bot that detects Solana meme candidates, tracks paper-trade outcomes, and improves criteria with Auto-Tuning. Solana meme detection performance tracking Finding Solana meme candidates alone does not improve the next decision rule. dd Signal Bot narrows candidates with Nansen CLI and DexScreener, then tracks Conviction, paper-in, Watch reactions, and results in one flow. Use it when participants want to review which signals worked by feeding saved wallet observations and follow-up performance into Smart Wallet PDCA and Auto-Tuning. A bot for going beyond meme candidate discovery by storing reactions, paper picks, and results so signal quality can improve. Validate Capture Conviction, paper-in, and Watch reactions from alert cards Record Review results through paper picks, performance, and leaderboard Improve Adjust future alert evaluation with Smart Wallet PDCA and Auto-Tuning Solana meme candidate detection Alert card Signal: Auto-Tuning adjustment Uses Nansen CLI netflow and TGM deep dives for candidate extraction and alert cards. Creates non-trading validation logs with Conviction, paper-in, and Watch button reactions. Links saved wallet observations with follow-up performance through Smart Wallet PDCA. Auto-Tuning keeps Hard Gates unchanged and reflects saved performance only as a small Final Score adjustment. Read the alert card Check Flow/MCap, trader count, holder risk, and buyer/seller balance on the candidate card. Choose Conviction / paper-in / Watch Leave a reaction for the candidate and manage it as a paper pick for validation. Review performance Use /my, /leaderboard, /meme-recap, and /meme-results to review results and feed saved performance into future alert evaluation. 检测与复盘 Solana meme检测与模拟交易PDCA 检测Solana meme候选，记录模拟交易结果，并通过Auto-Tuning改进检测标准的Bot。 Solana meme检测 模拟交易 成绩追踪 只发现 Solana meme 候选，并不会让下一次判断规则变好。dd Signal Bot 用 Nansen CLI 和 DexScreener 缩小候选，再在同一流程中追踪 Conviction、エアIN、Watch 的反应和成绩。适合把保存的钱包观察和后续 performance 放入 Smart Wallet PDCA 与 Auto-Tuning，和参与者复盘哪些信号有效。 不止发现 meme 候选，还保存反应、paper pick 和结果，用来提升信号精度。 验证 从 Alert 卡片留下 Conviction、エアIN、Watch 的反应 记录 通过 paper picks、成绩、leaderboard 查看结果 改善 用 Smart Wallet PDCA 和 Auto-Tuning 调整下一次 Alert 评价 Solana meme 候选检测 Alert 卡片 Signal: Auto-Tuning 补正 把 Nansen CLI 的 netflow 和 TGM 深挖用于候选抽取与 Alert 卡片。 通过 Conviction、エアIN、Watch 按钮反应生成非交易验证日志。 用 Smart Wallet PDCA 连接保存的钱包观察和后续 performance。 Auto-Tuning 不改变 Hard Gate，只把保存成绩小幅反映到 Final Score。 查看 Alert 卡片 在候选卡片中确认 Flow/MCap、trader count、holder risk、buyer/seller balance。 选择 Conviction / エアIN / Watch 留下对候选的反应，并作为 paper pick 管理验证对象。 复盘成绩 通过 /my、/leaderboard、/meme-recap、/meme-results 查看结果，并把保存成绩用于下次 Alert 评价。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Solana meme candidate detection",
+            "Alert card",
+            "paper picks",
+            "/my",
+            "/leaderboard",
+            "/meme-recap",
+            "/meme-results",
+            "Smart Wallet PDCA",
+            "Auto-Tuning"
+          ],
+          "card_summary": "A bot that detects Solana meme candidates, tracks paper-trade outcomes, and improves criteria with Auto-Tuning.",
+          "category_label": "Detection & review",
+          "detail_intro": "Finding Solana meme candidates alone does not improve the next decision rule. dd Signal Bot narrows candidates with Nansen CLI and DexScreener, then tracks Conviction, paper-in, Watch reactions, and results in one flow. Use it when participants want to review which signals worked by feeding saved wallet observations and follow-up performance into Smart Wallet PDCA and Auto-Tuning.",
+          "highlights": [
+            "Uses Nansen CLI netflow and TGM deep dives for candidate extraction and alert cards.",
+            "Creates non-trading validation logs with Conviction, paper-in, and Watch button reactions.",
+            "Links saved wallet observations with follow-up performance through Smart Wallet PDCA.",
+            "Auto-Tuning keeps Hard Gates unchanged and reflects saved performance only as a small Final Score adjustment."
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research smart-money netflow",
+            "API: research tgm token-information",
+            "API: research tgm flow-intelligence",
+            "API: research tgm holders",
+            "API: research tgm who-bought-sold",
+            "API: research smart-money dex-trades",
+            "Signal: Smart Money netflow",
+            "Signal: Flow/MCap",
+            "Signal: trader count",
+            "Signal: holder risk",
+            "Signal: buyer/seller balance",
+            "Signal: paper pick performance",
+            "Signal: Smart Wallet Quality",
+            "Signal: Auto-Tuning adjustment"
+          ],
+          "objective_body": "A bot for going beyond meme candidate discovery by storing reactions, paper picks, and results so signal quality can improve.",
+          "role_label": "Solana meme detection and paper-trade PDCA",
+          "scene_points": [
+            {
+              "body": "Capture Conviction, paper-in, and Watch reactions from alert cards",
+              "title": "Validate"
+            },
+            {
+              "body": "Review results through paper picks, performance, and leaderboard",
+              "title": "Record"
+            },
+            {
+              "body": "Adjust future alert evaluation with Smart Wallet PDCA and Auto-Tuning",
+              "title": "Improve"
+            }
+          ],
+          "search_terms": [
+            "Solana meme detection",
+            "paper trading",
+            "Auto-Tuning",
+            "PDCA",
+            "performance tracking"
+          ],
+          "usage_steps": [
+            {
+              "body": "Check Flow/MCap, trader count, holder risk, and buyer/seller balance on the candidate card.",
+              "title": "Read the alert card"
+            },
+            {
+              "body": "Leave a reaction for the candidate and manage it as a paper pick for validation.",
+              "title": "Choose Conviction / paper-in / Watch"
+            },
+            {
+              "body": "Use /my, /leaderboard, /meme-recap, and /meme-results to review results and feed saved performance into future alert evaluation.",
+              "title": "Review performance"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "Solana meme候補検出",
+            "Alertカード",
+            "paper picks",
+            "/my",
+            "/leaderboard",
+            "/meme-recap",
+            "/meme-results",
+            "Smart Wallet PDCA",
+            "Auto-Tuning"
+          ],
+          "card_summary": "Solanaミーム候補を検出し、エアトレード結果とAuto-Tuningで検出基準を育てるBot。",
+          "category_label": "検出・検証",
+          "detail_intro": "Solanaミーム候補は見つけるだけでは、次の判断基準が育ちにくい。dd Signal Bot は Nansen CLI とDexScreenerで候補を絞り、Conviction、エアIN、Watchの反応と成績を同じ流れで追う。保存したwallet観測と後追いperformanceをSmart Wallet PDCAやAuto-Tuningに回し、どのシグナルが効いたのかを参加者と振り返りたい時に使う。",
+          "highlights": [
+            "Nansen CLIのnetflowとTGM系深掘りを、候補抽出とAlertカードに使う。",
+            "Conviction、エアIN、Watchのbutton反応で非売買の検証ログを作る。",
+            "Smart Wallet PDCAで保存済みwallet観測と後追いperformanceを結びつける。",
+            "Auto-TuningはHard Gateを変えず、保存済み成績をFinal Scoreへ小幅に反映する。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research smart-money netflow",
+            "API: research tgm token-information",
+            "API: research tgm flow-intelligence",
+            "API: research tgm holders",
+            "API: research tgm who-bought-sold",
+            "API: research smart-money dex-trades",
+            "Signal: Smart Money netflow",
+            "Signal: Flow/MCap",
+            "Signal: trader count",
+            "Signal: holder risk",
+            "Signal: buyer/seller balance",
+            "Signal: paper pick performance",
+            "Signal: Smart Wallet Quality",
+            "Signal: Auto-Tuning補正"
+          ],
+          "objective_body": "ミーム候補の発見で終わらせず、反応、paper pick、結果を残してシグナル精度を育てるためのBotです。",
+          "role_label": "Solanaミーム検出とエアトレードPDCA",
+          "scene_points": [
+            {
+              "body": "AlertカードからConviction、エアIN、Watchの反応を残す",
+              "title": "検証する"
+            },
+            {
+              "body": "paper picks、成績、leaderboardで結果を見る",
+              "title": "記録する"
+            },
+            {
+              "body": "Smart Wallet PDCAとAuto-Tuningで次回Alertの評価を調整する",
+              "title": "改善する"
+            }
+          ],
+          "search_terms": [
+            "Solanaミーム",
+            "エアトレード",
+            "Auto-Tuning",
+            "PDCA",
+            "成績追跡"
+          ],
+          "usage_steps": [
+            {
+              "body": "Flow/MCap、trader count、holder risk、buyer/seller balanceを候補カードで確認する。",
+              "title": "Alertカードを見る"
+            },
+            {
+              "body": "候補への反応を残し、paper pickとして検証対象を管理する。",
+              "title": "Conviction / エアIN / Watchを選ぶ"
+            },
+            {
+              "body": "/my、/leaderboard、/meme-recap、/meme-resultsで結果を見て、保存済み成績を次回Alert評価に活かす。",
+              "title": "成績を振り返る"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "Solana meme 候选检测",
+            "Alert 卡片",
+            "paper picks",
+            "/my",
+            "/leaderboard",
+            "/meme-recap",
+            "/meme-results",
+            "Smart Wallet PDCA",
+            "Auto-Tuning"
+          ],
+          "card_summary": "检测Solana meme候选，记录模拟交易结果，并通过Auto-Tuning改进检测标准的Bot。",
+          "category_label": "检测与复盘",
+          "detail_intro": "只发现 Solana meme 候选，并不会让下一次判断规则变好。dd Signal Bot 用 Nansen CLI 和 DexScreener 缩小候选，再在同一流程中追踪 Conviction、エアIN、Watch 的反应和成绩。适合把保存的钱包观察和后续 performance 放入 Smart Wallet PDCA 与 Auto-Tuning，和参与者复盘哪些信号有效。",
+          "highlights": [
+            "把 Nansen CLI 的 netflow 和 TGM 深挖用于候选抽取与 Alert 卡片。",
+            "通过 Conviction、エアIN、Watch 按钮反应生成非交易验证日志。",
+            "用 Smart Wallet PDCA 连接保存的钱包观察和后续 performance。",
+            "Auto-Tuning 不改变 Hard Gate，只把保存成绩小幅反映到 Final Score。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: research smart-money netflow",
+            "API: research tgm token-information",
+            "API: research tgm flow-intelligence",
+            "API: research tgm holders",
+            "API: research tgm who-bought-sold",
+            "API: research smart-money dex-trades",
+            "Signal: Smart Money netflow",
+            "Signal: Flow/MCap",
+            "Signal: trader count",
+            "Signal: holder risk",
+            "Signal: buyer/seller balance",
+            "Signal: paper pick performance",
+            "Signal: Smart Wallet Quality",
+            "Signal: Auto-Tuning 补正"
+          ],
+          "objective_body": "不止发现 meme 候选，还保存反应、paper pick 和结果，用来提升信号精度。",
+          "role_label": "Solana meme检测与模拟交易PDCA",
+          "scene_points": [
+            {
+              "body": "从 Alert 卡片留下 Conviction、エアIN、Watch 的反应",
+              "title": "验证"
+            },
+            {
+              "body": "通过 paper picks、成绩、leaderboard 查看结果",
+              "title": "记录"
+            },
+            {
+              "body": "用 Smart Wallet PDCA 和 Auto-Tuning 调整下一次 Alert 评价",
+              "title": "改善"
+            }
+          ],
+          "search_terms": [
+            "Solana meme检测",
+            "模拟交易",
+            "Auto-Tuning",
+            "PDCA",
+            "成绩追踪"
+          ],
+          "usage_steps": [
+            {
+              "body": "在候选卡片中确认 Flow/MCap、trader count、holder risk、buyer/seller balance。",
+              "title": "查看 Alert 卡片"
+            },
+            {
+              "body": "留下对候选的反应，并作为 paper pick 管理验证对象。",
+              "title": "选择 Conviction / エアIN / Watch"
+            },
+            {
+              "body": "通过 /my、/leaderboard、/meme-recap、/meme-results 查看结果，并把保存成绩用于下次 Alert 评价。",
+              "title": "复盘成绩"
+            }
+          ]
+        }
+      },
+      "name": "dd Signal Bot"
+    },
+    "moltbot": {
+      "haystack": "moltbot takmolts bb_mol_crypto analytics observability Solanaミーム監視・分析ダッシュボード型 Solana meme coins notification_watch missed_signal solana ミーム nansen api smart money helius dexscreener dashboard 監視 分析 ダッシュボード smart-money/dex-trades Token Screener Nansen Smart Wallets token analysis BUY速報 Smart Money監視 時系列ダイジェスト 群衆ブレイク whale BUY 候補トークン追跡優先度 /analyze: 19 credits per call, on demand. /digest: 3 credits per call, optional 4h or 24h schedule. Smart Money roster: 5 credits per daily call. BUY notification and dashboard aggregation: 0 Nansen credits. Python Discord Bot Helius webhook GitHub Pages 監視・分析 BUY速報からSmart Money根拠、公開ダッシュボードでの追跡判断までを短くつなぐSolanaミーム監視Bot。 Solanaミーム 公開ダッシュボード 追跡判断 Solanaミームは動きが速く、気づいた時にはBUYが走った後になりやすい。moltbotは通知と公開ダッシュボードで、根拠確認と追跡判断までを短くするBotです。 急なBUY通知を起点に、Smart Moneyの根拠と公開ダッシュボード上の追跡優先度を一気に確認するためのBotです。 検知する BUY速報、群衆ブレイク、whale BUYを先に拾う 確認する smart-money/dex-tradesやToken Screener由来の根拠を見る 判断する 公開ダッシュボードで候補を追うか見送るか決める オンデマンド銘柄分析 候補トークン比較 API: Nansen API API: smart-money/dex-trades API: Token Screener API: Nansen Smart Wallets API: token analysis Signal: BUY速報 Signal: Smart Money監視 Signal: 時系列ダイジェスト Signal: 群衆ブレイク Signal: whale BUY Signal: 候補トークン追跡優先度 Nansen は token analysis、Token Screener、smart-money/dex-trades の根拠確認に絞る BUY通知は群衆ブレイクやwhale BUYを先に知らせ、詳細はダッシュボードで追える sm_signal_events を期間別に集計し、通知に出ない低シグナル候補も含めて見られる 通知で変化を受け取る BUY速報、Smart Money監視、時系列ダイジェストで、今見るべきSolanaミーム候補を把握します。 根拠を確認する smart-money/dex-trades、Token Screener、token analysis由来の変化を候補ごとに確認します。 ダッシュボードで追う 公開ダッシュボードで群衆ブレイクやwhale BUY候補を見比べ、追跡優先度を決めます。 Monitoring & analytics Solana meme monitoring dashboard A Solana meme monitoring bot that connects buy alerts, Smart Money evidence, and public dashboard follow-up. solana meme monitoring buy alerts smart money evidence public dashboard follow-up tracking Solana memes move quickly, and by the time you notice them the buy flow may already be underway. moltbot shortens the path from alert to evidence review and follow-up decisions with notifications and a public dashboard. A bot for starting from sudden buy alerts and immediately checking Smart Money evidence plus follow-up priority on a public dashboard. Detect Catch buy alerts, crowd breakouts, and whale buys early Verify Review evidence from smart-money/dex-trades and Token Screener Decide Use the public dashboard to choose whether to follow or skip each candidate On-demand token analysis Smart Money monitoring Time-series digest Candidate token comparison Signal: Buy alerts Signal: Smart Money monitoring Signal: Time-series digest Signal: Crowd breakout Signal: Candidate token follow-up priority Uses Nansen for focused evidence checks through token analysis, Token Screener, and smart-money/dex-trades. Buy alerts surface crowd breakouts and whale buys first, with details available in the dashboard. Aggregates sm_signal_events by period so low-signal candidates that did not trigger alerts can still be reviewed. Receive changes by notification Use buy alerts, Smart Money monitoring, and time-series digests to see which Solana meme candidates deserve attention now. Check the evidence Review candidate-level changes from smart-money/dex-trades, Token Screener, and token analysis. Track on the dashboard Compare crowd breakouts and whale buy candidates on the public dashboard, then set follow-up priority. 监控与分析 Solana meme监控与分析看板 把BUY速报、Smart Money依据和公开看板追踪串起来的Solana meme监控Bot。 Solana meme监控 买入提醒 Smart Money依据 公开看板 追踪判断 Solana meme 变化很快，等你注意到时买入流可能已经开始。moltbot 通过通知和公开看板，缩短从提醒到依据确认、追踪判断的路径。 从突然的买入提醒出发，一次性查看 Smart Money 依据和公开看板中的追踪优先级。 检测 先捕捉 BUY 速报、群体突破和 whale BUY 确认 查看 smart-money/dex-trades 和 Token Screener 的依据 判断 在公开看板中决定继续追踪还是放弃候选 按需代币分析 Smart Money 监控 BUY 速报 时间序列摘要 候选代币比较 Signal: BUY 速报 Signal: Smart Money 监控 Signal: 时间序列摘要 Signal: 群体突破 Signal: 候选代币追踪优先级 Nansen 只用于 token analysis、Token Screener、smart-money/dex-trades 的依据确认。 BUY 通知先提示群体突破和 whale BUY，详情可在看板继续追踪。 按时间段汇总 sm_signal_events，也能查看未触发通知的低信号候选。 通过通知接收变化 通过 BUY 速报、Smart Money 监控和时间序列摘要，掌握现在该看的 Solana meme 候选。 确认依据 逐个候选查看 smart-money/dex-trades、Token Screener、token analysis 带来的变化。 在看板追踪 在公开看板比较群体突破和 whale BUY 候选，决定追踪优先级。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "On-demand token analysis",
+            "Smart Money monitoring",
+            "Buy alerts",
+            "Time-series digest",
+            "Candidate token comparison",
+            "Public dashboard"
+          ],
+          "card_summary": "A Solana meme monitoring bot that connects buy alerts, Smart Money evidence, and public dashboard follow-up.",
+          "category_label": "Monitoring & analytics",
+          "detail_intro": "Solana memes move quickly, and by the time you notice them the buy flow may already be underway. moltbot shortens the path from alert to evidence review and follow-up decisions with notifications and a public dashboard.",
+          "highlights": [
+            "Uses Nansen for focused evidence checks through token analysis, Token Screener, and smart-money/dex-trades.",
+            "Buy alerts surface crowd breakouts and whale buys first, with details available in the dashboard.",
+            "Aggregates sm_signal_events by period so low-signal candidates that did not trigger alerts can still be reviewed."
+          ],
+          "nansen_tags": [
+            "API: Nansen API",
+            "API: smart-money/dex-trades",
+            "API: Token Screener",
+            "API: Nansen Smart Wallets",
+            "API: token analysis",
+            "Signal: Buy alerts",
+            "Signal: Smart Money monitoring",
+            "Signal: Time-series digest",
+            "Signal: Crowd breakout",
+            "Signal: Whale buy",
+            "Signal: Candidate token follow-up priority"
+          ],
+          "objective_body": "A bot for starting from sudden buy alerts and immediately checking Smart Money evidence plus follow-up priority on a public dashboard.",
+          "role_label": "Solana meme monitoring dashboard",
+          "scene_points": [
+            {
+              "body": "Catch buy alerts, crowd breakouts, and whale buys early",
+              "title": "Detect"
+            },
+            {
+              "body": "Review evidence from smart-money/dex-trades and Token Screener",
+              "title": "Verify"
+            },
+            {
+              "body": "Use the public dashboard to choose whether to follow or skip each candidate",
+              "title": "Decide"
+            }
+          ],
+          "search_terms": [
+            "solana meme monitoring",
+            "buy alerts",
+            "smart money evidence",
+            "public dashboard",
+            "follow-up tracking"
+          ],
+          "usage_steps": [
+            {
+              "body": "Use buy alerts, Smart Money monitoring, and time-series digests to see which Solana meme candidates deserve attention now.",
+              "title": "Receive changes by notification"
+            },
+            {
+              "body": "Review candidate-level changes from smart-money/dex-trades, Token Screener, and token analysis.",
+              "title": "Check the evidence"
+            },
+            {
+              "body": "Compare crowd breakouts and whale buy candidates on the public dashboard, then set follow-up priority.",
+              "title": "Track on the dashboard"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "オンデマンド銘柄分析",
+            "Smart Money監視",
+            "BUY速報",
+            "時系列ダイジェスト",
+            "候補トークン比較",
+            "公開ダッシュボード"
+          ],
+          "card_summary": "BUY速報からSmart Money根拠、公開ダッシュボードでの追跡判断までを短くつなぐSolanaミーム監視Bot。",
+          "category_label": "監視・分析",
+          "detail_intro": "Solanaミームは動きが速く、気づいた時にはBUYが走った後になりやすい。moltbotは通知と公開ダッシュボードで、根拠確認と追跡判断までを短くするBotです。",
+          "highlights": [
+            "Nansen は token analysis、Token Screener、smart-money/dex-trades の根拠確認に絞る",
+            "BUY通知は群衆ブレイクやwhale BUYを先に知らせ、詳細はダッシュボードで追える",
+            "sm_signal_events を期間別に集計し、通知に出ない低シグナル候補も含めて見られる"
+          ],
+          "nansen_tags": [
+            "API: Nansen API",
+            "API: smart-money/dex-trades",
+            "API: Token Screener",
+            "API: Nansen Smart Wallets",
+            "API: token analysis",
+            "Signal: BUY速報",
+            "Signal: Smart Money監視",
+            "Signal: 時系列ダイジェスト",
+            "Signal: 群衆ブレイク",
+            "Signal: whale BUY",
+            "Signal: 候補トークン追跡優先度"
+          ],
+          "objective_body": "急なBUY通知を起点に、Smart Moneyの根拠と公開ダッシュボード上の追跡優先度を一気に確認するためのBotです。",
+          "role_label": "Solanaミーム監視・分析ダッシュボード型",
+          "scene_points": [
+            {
+              "body": "BUY速報、群衆ブレイク、whale BUYを先に拾う",
+              "title": "検知する"
+            },
+            {
+              "body": "smart-money/dex-tradesやToken Screener由来の根拠を見る",
+              "title": "確認する"
+            },
+            {
+              "body": "公開ダッシュボードで候補を追うか見送るか決める",
+              "title": "判断する"
+            }
+          ],
+          "search_terms": [
+            "Solanaミーム",
+            "BUY速報",
+            "Smart Money監視",
+            "公開ダッシュボード",
+            "追跡判断"
+          ],
+          "usage_steps": [
+            {
+              "body": "BUY速報、Smart Money監視、時系列ダイジェストで、今見るべきSolanaミーム候補を把握します。",
+              "title": "通知で変化を受け取る"
+            },
+            {
+              "body": "smart-money/dex-trades、Token Screener、token analysis由来の変化を候補ごとに確認します。",
+              "title": "根拠を確認する"
+            },
+            {
+              "body": "公開ダッシュボードで群衆ブレイクやwhale BUY候補を見比べ、追跡優先度を決めます。",
+              "title": "ダッシュボードで追う"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "按需代币分析",
+            "Smart Money 监控",
+            "BUY 速报",
+            "时间序列摘要",
+            "候选代币比较",
+            "公开看板"
+          ],
+          "card_summary": "把BUY速报、Smart Money依据和公开看板追踪串起来的Solana meme监控Bot。",
+          "category_label": "监控与分析",
+          "detail_intro": "Solana meme 变化很快，等你注意到时买入流可能已经开始。moltbot 通过通知和公开看板，缩短从提醒到依据确认、追踪判断的路径。",
+          "highlights": [
+            "Nansen 只用于 token analysis、Token Screener、smart-money/dex-trades 的依据确认。",
+            "BUY 通知先提示群体突破和 whale BUY，详情可在看板继续追踪。",
+            "按时间段汇总 sm_signal_events，也能查看未触发通知的低信号候选。"
+          ],
+          "nansen_tags": [
+            "API: Nansen API",
+            "API: smart-money/dex-trades",
+            "API: Token Screener",
+            "API: Nansen Smart Wallets",
+            "API: token analysis",
+            "Signal: BUY 速报",
+            "Signal: Smart Money 监控",
+            "Signal: 时间序列摘要",
+            "Signal: 群体突破",
+            "Signal: whale BUY",
+            "Signal: 候选代币追踪优先级"
+          ],
+          "objective_body": "从突然的买入提醒出发，一次性查看 Smart Money 依据和公开看板中的追踪优先级。",
+          "role_label": "Solana meme监控与分析看板",
+          "scene_points": [
+            {
+              "body": "先捕捉 BUY 速报、群体突破和 whale BUY",
+              "title": "检测"
+            },
+            {
+              "body": "查看 smart-money/dex-trades 和 Token Screener 的依据",
+              "title": "确认"
+            },
+            {
+              "body": "在公开看板中决定继续追踪还是放弃候选",
+              "title": "判断"
+            }
+          ],
+          "search_terms": [
+            "Solana meme监控",
+            "买入提醒",
+            "Smart Money依据",
+            "公开看板",
+            "追踪判断"
+          ],
+          "usage_steps": [
+            {
+              "body": "通过 BUY 速报、Smart Money 监控和时间序列摘要，掌握现在该看的 Solana meme 候选。",
+              "title": "通过通知接收变化"
+            },
+            {
+              "body": "逐个候选查看 smart-money/dex-trades、Token Screener、token analysis 带来的变化。",
+              "title": "确认依据"
+            },
+            {
+              "body": "在公开看板比较群体突破和 whale BUY 候选，决定追踪优先级。",
+              "title": "在看板追踪"
+            }
+          ]
+        }
+      },
+      "name": "moltbot"
+    },
+    "omikuji-bot": {
+      "haystack": "omikuji-bot おみくじBOT natoundou namiki5678 social community おみくじ型トークン発見 multi-chain community token discovery active_research curiosity omikuji nansen api token screener volume surge market metrics コミュニティ ラッキートークン token-screener Nansen AIラベル予想 スマートマネー温度計 流動性 時価総額 Volume/MCAP比率 価格変化 短期出来高急増 チャンネル内Ticker Discord Bot Community engagement コミュニティ参加導線 「おみくじ」投稿で運勢とラッキートークンを返し、Nansen由来の温度感も会話に混ぜるBot。 おみくじ Nansen AIラベル 分析ツールを開くほどではないけれど、話題のトークンが少し気になる。Discordで「おみくじ」と送るだけで、運勢、ラッキートークン、Nansen AIラベル予想、スマートマネー温度計、流動性、時価総額の温度感を読める。コミュニティの会話を止めずに、遊びの入口からトークン文脈へ触れたい時に使う。 重い分析画面を開かず、コミュニティの遊びからトークンの温度感と話題化のきっかけを作るためのBotです。 参加する 「おみくじ」だけで運勢とラッキートークンを受け取る 確認する Nansen AIラベル予想、スマートマネー温度計、流動性、時価総額を読む 選ぶ 最近の$Ticker投稿や短期出来高急増を会話のきっかけにする おみくじ結果 ラッキートークン表示 チャンネル内Ticker反映 短期出来高急増検出 DexScreenerリンク API: token-screener Signal: Nansen AIラベル予想 Signal: スマートマネー温度計 Signal: 流動性 Signal: 時価総額 Signal: Volume/MCAP比率 Signal: 価格変化 Signal: 短期出来高急増 Signal: チャンネル内Ticker Nansen AIラベル予想、スマートマネー温度計、市場指標を遊びの結果に重ねる。 最近の$Ticker投稿と短期出来高急増を候補選定に反映する。 大凶や凶では見送り判断も出るエンタメ設計。 おみくじを送る Discordで「おみくじ」と送り、運勢とラッキートークンを受け取る。 温度感を見る Nansen由来のAIラベル予想、スマートマネー温度計、流動性、時価総額、Volume/MCAP比率を見る。 話題にするか決める 遊びの結果を会話のきっかけにし、深掘りするか見送るかを選ぶ。 Omikuji-style token discovery A playful bot that replies to omikuji posts with fortune, lucky tokens, and Nansen-derived market signals. lucky token Nansen AI label smart money temperature Sometimes a trending token is interesting, but not enough to open a full analytics tool. By sending \"omikuji\" in Discord, users can see fortune results, a lucky token, Nansen AI label predictions, a Smart Money temperature read, liquidity, and market cap context. Use it when you want to move from playful community interaction into token context without stopping the conversation. A bot for creating token temperature checks and conversation starters from community play without opening a heavy analytics screen. Join Send only \"omikuji\" to receive a fortune and lucky token Check Read Nansen AI label predictions, Smart Money temperature, liquidity, and market cap Choose Use recent $Ticker posts and short-term volume spikes as conversation starters Fortune result Lucky token display Nansen AI label prediction Channel ticker reflection Short-term volume spike detection DexScreener link Signal: Nansen AI label prediction Signal: Smart Money temperature Signal: Liquidity Signal: Market cap Signal: Volume/MCAP ratio Signal: Price change Signal: Short-term volume spike Signal: Channel ticker Layers Nansen AI label predictions, Smart Money temperature, and market metrics onto a playful result. Reflects recent $Ticker posts and short-term volume spikes in candidate selection. Entertainment design can also suggest skipping on unlucky results. Send omikuji Send \"omikuji\" in Discord and receive a fortune plus lucky token. Read the temperature Check Nansen-derived AI label predictions, Smart Money temperature, liquidity, market cap, and Volume/MCAP ratio. Decide whether to discuss it Use the playful result as a conversation starter, then choose whether to dig deeper or skip it. 社区参与入口 抽签式代币发现 用户发送“おみくじ”后返回运势和幸运代币，并把Nansen来源的市场温度融入聊天。 抽签 社区互动 幸运代币 Nansen AI标签 Smart Money温度 有些热门代币让人有点在意，但又不值得打开完整分析工具。在 Discord 发送“おみくじ”，即可看到运势、幸运代币、Nansen AI 标签预测、Smart Money 温度、流动性和市值氛围。适合在不打断社区对话的情况下，从娱乐入口接触代币背景。 不用打开沉重的分析界面，从社区娱乐入口制造代币温度感和话题起点。 参与 只发送“おみくじ”即可收到运势和幸运代币 确认 查看 Nansen AI 标签预测、Smart Money 温度、流动性和市值 选择 把最近的 $Ticker 投稿和短期成交量激增作为对话契机 抽签结果 幸运代币展示 Nansen AI 标签预测 Smart Money 温度计 频道内 Ticker 反映 短期成交量激增检测 DexScreener 链接 Signal: Nansen AI 标签预测 Signal: Smart Money 温度计 Signal: 流动性 Signal: 市值 Signal: Volume/MCAP 比率 Signal: 价格变化 Signal: 短期成交量激增 Signal: 频道内 Ticker 把 Nansen AI 标签预测、Smart Money 温度和市场指标叠加到娱乐结果中。 把最近的 $Ticker 投稿和短期成交量激增纳入候选选择。 大凶或凶也会给出观望判断，保持娱乐化设计。 发送おみくじ 在 Discord 发送“おみくじ”，接收运势和幸运代币。 查看温度感 查看来自 Nansen 的 AI 标签预测、Smart Money 温度、流动性、市值和 Volume/MCAP 比率。 决定是否拿来讨论 把娱乐结果作为对话契机，再选择深挖或跳过。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Fortune result",
+            "Lucky token display",
+            "Nansen AI label prediction",
+            "Smart Money temperature",
+            "Channel ticker reflection",
+            "Short-term volume spike detection",
+            "DexScreener link"
+          ],
+          "card_summary": "A playful bot that replies to omikuji posts with fortune, lucky tokens, and Nansen-derived market signals.",
+          "category_label": "Community engagement",
+          "detail_intro": "Sometimes a trending token is interesting, but not enough to open a full analytics tool. By sending \"omikuji\" in Discord, users can see fortune results, a lucky token, Nansen AI label predictions, a Smart Money temperature read, liquidity, and market cap context. Use it when you want to move from playful community interaction into token context without stopping the conversation.",
+          "highlights": [
+            "Layers Nansen AI label predictions, Smart Money temperature, and market metrics onto a playful result.",
+            "Reflects recent $Ticker posts and short-term volume spikes in candidate selection.",
+            "Entertainment design can also suggest skipping on unlucky results."
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "Signal: Nansen AI label prediction",
+            "Signal: Smart Money temperature",
+            "Signal: Liquidity",
+            "Signal: Market cap",
+            "Signal: Volume/MCAP ratio",
+            "Signal: Price change",
+            "Signal: Short-term volume spike",
+            "Signal: Channel ticker"
+          ],
+          "objective_body": "A bot for creating token temperature checks and conversation starters from community play without opening a heavy analytics screen.",
+          "role_label": "Omikuji-style token discovery",
+          "scene_points": [
+            {
+              "body": "Send only \"omikuji\" to receive a fortune and lucky token",
+              "title": "Join"
+            },
+            {
+              "body": "Read Nansen AI label predictions, Smart Money temperature, liquidity, and market cap",
+              "title": "Check"
+            },
+            {
+              "body": "Use recent $Ticker posts and short-term volume spikes as conversation starters",
+              "title": "Choose"
+            }
+          ],
+          "search_terms": [
+            "omikuji",
+            "community engagement",
+            "lucky token",
+            "Nansen AI label",
+            "smart money temperature"
+          ],
+          "usage_steps": [
+            {
+              "body": "Send \"omikuji\" in Discord and receive a fortune plus lucky token.",
+              "title": "Send omikuji"
+            },
+            {
+              "body": "Check Nansen-derived AI label predictions, Smart Money temperature, liquidity, market cap, and Volume/MCAP ratio.",
+              "title": "Read the temperature"
+            },
+            {
+              "body": "Use the playful result as a conversation starter, then choose whether to dig deeper or skip it.",
+              "title": "Decide whether to discuss it"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "おみくじ結果",
+            "ラッキートークン表示",
+            "Nansen AIラベル予想",
+            "スマートマネー温度計",
+            "チャンネル内Ticker反映",
+            "短期出来高急増検出",
+            "DexScreenerリンク"
+          ],
+          "card_summary": "「おみくじ」投稿で運勢とラッキートークンを返し、Nansen由来の温度感も会話に混ぜるBot。",
+          "category_label": "コミュニティ参加導線",
+          "detail_intro": "分析ツールを開くほどではないけれど、話題のトークンが少し気になる。Discordで「おみくじ」と送るだけで、運勢、ラッキートークン、Nansen AIラベル予想、スマートマネー温度計、流動性、時価総額の温度感を読める。コミュニティの会話を止めずに、遊びの入口からトークン文脈へ触れたい時に使う。",
+          "highlights": [
+            "Nansen AIラベル予想、スマートマネー温度計、市場指標を遊びの結果に重ねる。",
+            "最近の$Ticker投稿と短期出来高急増を候補選定に反映する。",
+            "大凶や凶では見送り判断も出るエンタメ設計。"
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "Signal: Nansen AIラベル予想",
+            "Signal: スマートマネー温度計",
+            "Signal: 流動性",
+            "Signal: 時価総額",
+            "Signal: Volume/MCAP比率",
+            "Signal: 価格変化",
+            "Signal: 短期出来高急増",
+            "Signal: チャンネル内Ticker"
+          ],
+          "objective_body": "重い分析画面を開かず、コミュニティの遊びからトークンの温度感と話題化のきっかけを作るためのBotです。",
+          "role_label": "おみくじ型トークン発見",
+          "scene_points": [
+            {
+              "body": "「おみくじ」だけで運勢とラッキートークンを受け取る",
+              "title": "参加する"
+            },
+            {
+              "body": "Nansen AIラベル予想、スマートマネー温度計、流動性、時価総額を読む",
+              "title": "確認する"
+            },
+            {
+              "body": "最近の$Ticker投稿や短期出来高急増を会話のきっかけにする",
+              "title": "選ぶ"
+            }
+          ],
+          "search_terms": [
+            "おみくじ",
+            "コミュニティ",
+            "ラッキートークン",
+            "Nansen AIラベル",
+            "スマートマネー温度計"
+          ],
+          "usage_steps": [
+            {
+              "body": "Discordで「おみくじ」と送り、運勢とラッキートークンを受け取る。",
+              "title": "おみくじを送る"
+            },
+            {
+              "body": "Nansen由来のAIラベル予想、スマートマネー温度計、流動性、時価総額、Volume/MCAP比率を見る。",
+              "title": "温度感を見る"
+            },
+            {
+              "body": "遊びの結果を会話のきっかけにし、深掘りするか見送るかを選ぶ。",
+              "title": "話題にするか決める"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "抽签结果",
+            "幸运代币展示",
+            "Nansen AI 标签预测",
+            "Smart Money 温度计",
+            "频道内 Ticker 反映",
+            "短期成交量激增检测",
+            "DexScreener 链接"
+          ],
+          "card_summary": "用户发送“おみくじ”后返回运势和幸运代币，并把Nansen来源的市场温度融入聊天。",
+          "category_label": "社区参与入口",
+          "detail_intro": "有些热门代币让人有点在意，但又不值得打开完整分析工具。在 Discord 发送“おみくじ”，即可看到运势、幸运代币、Nansen AI 标签预测、Smart Money 温度、流动性和市值氛围。适合在不打断社区对话的情况下，从娱乐入口接触代币背景。",
+          "highlights": [
+            "把 Nansen AI 标签预测、Smart Money 温度和市场指标叠加到娱乐结果中。",
+            "把最近的 $Ticker 投稿和短期成交量激增纳入候选选择。",
+            "大凶或凶也会给出观望判断，保持娱乐化设计。"
+          ],
+          "nansen_tags": [
+            "API: token-screener",
+            "Signal: Nansen AI 标签预测",
+            "Signal: Smart Money 温度计",
+            "Signal: 流动性",
+            "Signal: 市值",
+            "Signal: Volume/MCAP 比率",
+            "Signal: 价格变化",
+            "Signal: 短期成交量激增",
+            "Signal: 频道内 Ticker"
+          ],
+          "objective_body": "不用打开沉重的分析界面，从社区娱乐入口制造代币温度感和话题起点。",
+          "role_label": "抽签式代币发现",
+          "scene_points": [
+            {
+              "body": "只发送“おみくじ”即可收到运势和幸运代币",
+              "title": "参与"
+            },
+            {
+              "body": "查看 Nansen AI 标签预测、Smart Money 温度、流动性和市值",
+              "title": "确认"
+            },
+            {
+              "body": "把最近的 $Ticker 投稿和短期成交量激增作为对话契机",
+              "title": "选择"
+            }
+          ],
+          "search_terms": [
+            "抽签",
+            "社区互动",
+            "幸运代币",
+            "Nansen AI标签",
+            "Smart Money温度"
+          ],
+          "usage_steps": [
+            {
+              "body": "在 Discord 发送“おみくじ”，接收运势和幸运代币。",
+              "title": "发送おみくじ"
+            },
+            {
+              "body": "查看来自 Nansen 的 AI 标签预测、Smart Money 温度、流动性、市值和 Volume/MCAP 比率。",
+              "title": "查看温度感"
+            },
+            {
+              "body": "把娱乐结果作为对话契机，再选择深挖或跳过。",
+              "title": "决定是否拿来讨论"
+            }
+          ]
+        }
+      },
+      "name": "おみくじBOT"
+    },
+    "siestan-bot": {
+      "haystack": "siestan-bot しえすたんBot mitsuritan mitsuri_eth analytics research-card Solanaトークン分析とwatch支援 Solana tokens active_research curiosity siestan bot mitsuri5 token analysis mcap liquidity smart money trades fund inflow risk check 分析カード Nansen CLI smart-money/dex-trades REST research smart-money netflow research token flow-intelligence research token info research token holders research token dex-trades research token ohlcv research profiler pnl-summary Smart Money DEX Trades Netflow Flow Intelligence Token Info 時価総額 / 流動性 Holders Risk注意点 Profiler 90D PnL Watchlist price change Node.js Discord Bot Nansen API DexScreener JSON storage Solanaトークンを/checkのMCAP・流動性・リスクからWatch、deep、reviewまで追えるBot。 Solanaトークン分析 Watch支援 流動性 リスク情報 Solanaトークンは、最初のカード確認からwatch、deep analysis、振り返りまで情報が散らばりやすい。しえすたんBot は CAやDexScreener URLから、時価総額、流動性、ホルダー数、Smart Money Flow、DEX売買、リスク注意点をToken Checkカードにまとめる。気になるtokenを一度見て終わりにせず、Watch Radar、/deep、/reviewで後から振り返りたい時に使う。 /checkで見たtokenをWatch、deep analysis、reviewまでつなぎ、単発確認を継続調査に変えるためのBotです。 確認する 時価総額、流動性、ホルダー数、Smart Money Flow、リスク注意点をカードで見る 継続する /checkからWatchlist、/deep、/reviewまで同じtokenを追う 振り返る Alpha Radar、Signal Review、Elite SMで過去シグナルを見直す Token Check 時価総額 / 流動性表示 リスク注意点 Watch Radar Deep Radar Alpha Radar Signal Review Elite SM Radar API: Nansen CLI API: smart-money/dex-trades REST API: research smart-money netflow API: research token flow-intelligence API: research token info API: research token holders API: research token dex-trades API: research token ohlcv API: research profiler pnl-summary Signal: Smart Money DEX Trades Signal: Netflow Signal: Flow Intelligence Signal: Token Info Signal: 時価総額 / 流動性 Signal: Holders Signal: Risk注意点 Signal: Profiler 90D PnL Signal: Watchlist price change Token Checkカードで時価総額、流動性、ホルダー数、Smart Money Flow、DEX売買、リスクをまとめる。 Nansen CLIとsmart-money/dex-trades RESTの両方を使う。 /checkからWatchlist、/deep、/reviewまで、同じtokenを継続して追える。 Elite SMの90D PnL、buyers/sellers、holders、flowをスコアリングに反映する。 /checkでカードを見る CAやDexScreener URLから時価総額、流動性、ホルダー数、SM Flow、リスク注意点を見る。 Watchlistや/deepで追う Watch Radar、deep analysis、flow、holders、DEX tradesで根拠を読み続ける。 /radarや/reviewで振り返る Alpha Radar、Signal Review、Elite SMで候補と過去シグナルを見直す。 Analysis card Solana token analysis and watch support A bot that takes a Solana token from /check MCAP, liquidity, and risk into Watch, deep analysis, and review. Solana token analysis watch support risk signals For Solana tokens, information can scatter between the first card check, watch, deep analysis, and review. Siestan Bot turns a CA or DexScreener URL into a Token Check card with market cap, liquidity, holder count, Smart Money Flow, DEX trades, and risk notes. Use it when you want to keep following a token through Watch Radar, /deep, and /review instead of checking it once and forgetting it. A bot for turning a one-off /check into ongoing research through Watch, deep analysis, and review. Check View market cap, liquidity, holder count, Smart Money Flow, and risk notes in one card Continue Follow the same token from /check to Watchlist, /deep, and /review Review Revisit past signals through Alpha Radar, Signal Review, and Elite SM Market cap / liquidity display Risk notes Signal: Market cap / liquidity Signal: Risk notes Token Check cards combine market cap, liquidity, holders, Smart Money Flow, DEX trades, and risk notes. Uses both Nansen CLI and smart-money/dex-trades REST. Follows the same token from /check to Watchlist, /deep, and /review. Reflects Elite SM 90D PnL, buyers/sellers, holders, and flow in scoring. Open a card with /check Use a CA or DexScreener URL to view market cap, liquidity, holders, SM Flow, and risk notes. Follow with Watchlist or /deep Continue reading evidence through Watch Radar, deep analysis, flow, holders, and DEX trades. Review with /radar or /review Use Alpha Radar, Signal Review, and Elite SM to revisit candidates and past signals. 分析卡片 Solana代币分析与Watch支持 从/check的MCAP、流动性和风险信息，一路追踪到Watch、deep和review的Solana代币分析Bot。 Solana代币分析 Watch支持 流动性 风险信息 Solana 代币从最初卡片确认到 watch、deep analysis、复盘，信息很容易分散。しえすたんBot 可从 CA 或 DexScreener URL 生成 Token Check 卡片，汇总市值、流动性、持有人数、Smart Money Flow、DEX 买卖和风险注意点。适合不想只看一次就结束，而是通过 Watch Radar、/deep、/review 后续复盘的场景。 把 /check 看过的 token 连接到 Watch、deep analysis、review，把单次确认变成持续调查。 确认 在卡片中查看市值、流动性、持有人数、Smart Money Flow 和风险注意点 持续 从 /check 到 Watchlist、/deep、/review 持续追踪同一 token 复盘 用 Alpha Radar、Signal Review、Elite SM 回看过去信号 市值 / 流动性显示 风险注意点 Signal: 市值 / 流动性 Signal: 风险注意点 Token Check 卡片汇总市值、流动性、持有人数、Smart Money Flow、DEX 买卖和风险。 同时使用 Nansen CLI 和 smart-money/dex-trades REST。 从 /check 到 Watchlist、/deep、/review，可以持续追踪同一个 token。 把 Elite SM 的 90D PnL、buyers/sellers、holders、flow 反映到评分中。 用 /check 查看卡片 从 CA 或 DexScreener URL 查看市值、流动性、持有人数、SM Flow、风险注意点。 用 Watchlist 或 /deep 追踪 通过 Watch Radar、deep analysis、flow、holders、DEX trades 持续阅读依据。 用 /radar 或 /review 复盘 通过 Alpha Radar、Signal Review、Elite SM 回看候选和过去信号。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Token Check",
+            "Market cap / liquidity display",
+            "Risk notes",
+            "Watch Radar",
+            "Deep Radar",
+            "Alpha Radar",
+            "Signal Review",
+            "Elite SM Radar"
+          ],
+          "card_summary": "A bot that takes a Solana token from /check MCAP, liquidity, and risk into Watch, deep analysis, and review.",
+          "category_label": "Analysis card",
+          "detail_intro": "For Solana tokens, information can scatter between the first card check, watch, deep analysis, and review. Siestan Bot turns a CA or DexScreener URL into a Token Check card with market cap, liquidity, holder count, Smart Money Flow, DEX trades, and risk notes. Use it when you want to keep following a token through Watch Radar, /deep, and /review instead of checking it once and forgetting it.",
+          "highlights": [
+            "Token Check cards combine market cap, liquidity, holders, Smart Money Flow, DEX trades, and risk notes.",
+            "Uses both Nansen CLI and smart-money/dex-trades REST.",
+            "Follows the same token from /check to Watchlist, /deep, and /review.",
+            "Reflects Elite SM 90D PnL, buyers/sellers, holders, and flow in scoring."
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: smart-money/dex-trades REST",
+            "API: research smart-money netflow",
+            "API: research token flow-intelligence",
+            "API: research token info",
+            "API: research token holders",
+            "API: research token dex-trades",
+            "API: research token ohlcv",
+            "API: research profiler pnl-summary",
+            "Signal: Smart Money DEX Trades",
+            "Signal: Netflow",
+            "Signal: Flow Intelligence",
+            "Signal: Token Info",
+            "Signal: Market cap / liquidity",
+            "Signal: Holders",
+            "Signal: Risk notes",
+            "Signal: Profiler 90D PnL",
+            "Signal: Watchlist price change"
+          ],
+          "objective_body": "A bot for turning a one-off /check into ongoing research through Watch, deep analysis, and review.",
+          "role_label": "Solana token analysis and watch support",
+          "scene_points": [
+            {
+              "body": "View market cap, liquidity, holder count, Smart Money Flow, and risk notes in one card",
+              "title": "Check"
+            },
+            {
+              "body": "Follow the same token from /check to Watchlist, /deep, and /review",
+              "title": "Continue"
+            },
+            {
+              "body": "Revisit past signals through Alpha Radar, Signal Review, and Elite SM",
+              "title": "Review"
+            }
+          ],
+          "search_terms": [
+            "Solana token analysis",
+            "watch support",
+            "MCAP",
+            "liquidity",
+            "risk signals"
+          ],
+          "usage_steps": [
+            {
+              "body": "Use a CA or DexScreener URL to view market cap, liquidity, holders, SM Flow, and risk notes.",
+              "title": "Open a card with /check"
+            },
+            {
+              "body": "Continue reading evidence through Watch Radar, deep analysis, flow, holders, and DEX trades.",
+              "title": "Follow with Watchlist or /deep"
+            },
+            {
+              "body": "Use Alpha Radar, Signal Review, and Elite SM to revisit candidates and past signals.",
+              "title": "Review with /radar or /review"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "Token Check",
+            "時価総額 / 流動性表示",
+            "リスク注意点",
+            "Watch Radar",
+            "Deep Radar",
+            "Alpha Radar",
+            "Signal Review",
+            "Elite SM Radar"
+          ],
+          "card_summary": "Solanaトークンを/checkのMCAP・流動性・リスクからWatch、deep、reviewまで追えるBot。",
+          "category_label": "分析カード",
+          "detail_intro": "Solanaトークンは、最初のカード確認からwatch、deep analysis、振り返りまで情報が散らばりやすい。しえすたんBot は CAやDexScreener URLから、時価総額、流動性、ホルダー数、Smart Money Flow、DEX売買、リスク注意点をToken Checkカードにまとめる。気になるtokenを一度見て終わりにせず、Watch Radar、/deep、/reviewで後から振り返りたい時に使う。",
+          "highlights": [
+            "Token Checkカードで時価総額、流動性、ホルダー数、Smart Money Flow、DEX売買、リスクをまとめる。",
+            "Nansen CLIとsmart-money/dex-trades RESTの両方を使う。",
+            "/checkからWatchlist、/deep、/reviewまで、同じtokenを継続して追える。",
+            "Elite SMの90D PnL、buyers/sellers、holders、flowをスコアリングに反映する。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: smart-money/dex-trades REST",
+            "API: research smart-money netflow",
+            "API: research token flow-intelligence",
+            "API: research token info",
+            "API: research token holders",
+            "API: research token dex-trades",
+            "API: research token ohlcv",
+            "API: research profiler pnl-summary",
+            "Signal: Smart Money DEX Trades",
+            "Signal: Netflow",
+            "Signal: Flow Intelligence",
+            "Signal: Token Info",
+            "Signal: 時価総額 / 流動性",
+            "Signal: Holders",
+            "Signal: Risk注意点",
+            "Signal: Profiler 90D PnL",
+            "Signal: Watchlist price change"
+          ],
+          "objective_body": "/checkで見たtokenをWatch、deep analysis、reviewまでつなぎ、単発確認を継続調査に変えるためのBotです。",
+          "role_label": "Solanaトークン分析とwatch支援",
+          "scene_points": [
+            {
+              "body": "時価総額、流動性、ホルダー数、Smart Money Flow、リスク注意点をカードで見る",
+              "title": "確認する"
+            },
+            {
+              "body": "/checkからWatchlist、/deep、/reviewまで同じtokenを追う",
+              "title": "継続する"
+            },
+            {
+              "body": "Alpha Radar、Signal Review、Elite SMで過去シグナルを見直す",
+              "title": "振り返る"
+            }
+          ],
+          "search_terms": [
+            "Solanaトークン分析",
+            "Watch支援",
+            "MCAP",
+            "流動性",
+            "リスク情報"
+          ],
+          "usage_steps": [
+            {
+              "body": "CAやDexScreener URLから時価総額、流動性、ホルダー数、SM Flow、リスク注意点を見る。",
+              "title": "/checkでカードを見る"
+            },
+            {
+              "body": "Watch Radar、deep analysis、flow、holders、DEX tradesで根拠を読み続ける。",
+              "title": "Watchlistや/deepで追う"
+            },
+            {
+              "body": "Alpha Radar、Signal Review、Elite SMで候補と過去シグナルを見直す。",
+              "title": "/radarや/reviewで振り返る"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "Token Check",
+            "市值 / 流动性显示",
+            "风险注意点",
+            "Watch Radar",
+            "Deep Radar",
+            "Alpha Radar",
+            "Signal Review",
+            "Elite SM Radar"
+          ],
+          "card_summary": "从/check的MCAP、流动性和风险信息，一路追踪到Watch、deep和review的Solana代币分析Bot。",
+          "category_label": "分析卡片",
+          "detail_intro": "Solana 代币从最初卡片确认到 watch、deep analysis、复盘，信息很容易分散。しえすたんBot 可从 CA 或 DexScreener URL 生成 Token Check 卡片，汇总市值、流动性、持有人数、Smart Money Flow、DEX 买卖和风险注意点。适合不想只看一次就结束，而是通过 Watch Radar、/deep、/review 后续复盘的场景。",
+          "highlights": [
+            "Token Check 卡片汇总市值、流动性、持有人数、Smart Money Flow、DEX 买卖和风险。",
+            "同时使用 Nansen CLI 和 smart-money/dex-trades REST。",
+            "从 /check 到 Watchlist、/deep、/review，可以持续追踪同一个 token。",
+            "把 Elite SM 的 90D PnL、buyers/sellers、holders、flow 反映到评分中。"
+          ],
+          "nansen_tags": [
+            "API: Nansen CLI",
+            "API: smart-money/dex-trades REST",
+            "API: research smart-money netflow",
+            "API: research token flow-intelligence",
+            "API: research token info",
+            "API: research token holders",
+            "API: research token dex-trades",
+            "API: research token ohlcv",
+            "API: research profiler pnl-summary",
+            "Signal: Smart Money DEX Trades",
+            "Signal: Netflow",
+            "Signal: Flow Intelligence",
+            "Signal: Token Info",
+            "Signal: 市值 / 流动性",
+            "Signal: Holders",
+            "Signal: 风险注意点",
+            "Signal: Profiler 90D PnL",
+            "Signal: Watchlist price change"
+          ],
+          "objective_body": "把 /check 看过的 token 连接到 Watch、deep analysis、review，把单次确认变成持续调查。",
+          "role_label": "Solana代币分析与Watch支持",
+          "scene_points": [
+            {
+              "body": "在卡片中查看市值、流动性、持有人数、Smart Money Flow 和风险注意点",
+              "title": "确认"
+            },
+            {
+              "body": "从 /check 到 Watchlist、/deep、/review 持续追踪同一 token",
+              "title": "持续"
+            },
+            {
+              "body": "用 Alpha Radar、Signal Review、Elite SM 回看过去信号",
+              "title": "复盘"
+            }
+          ],
+          "search_terms": [
+            "Solana代币分析",
+            "Watch支持",
+            "MCAP",
+            "流动性",
+            "风险信息"
+          ],
+          "usage_steps": [
+            {
+              "body": "从 CA 或 DexScreener URL 查看市值、流动性、持有人数、SM Flow、风险注意点。",
+              "title": "用 /check 查看卡片"
+            },
+            {
+              "body": "通过 Watch Radar、deep analysis、flow、holders、DEX trades 持续阅读依据。",
+              "title": "用 Watchlist 或 /deep 追踪"
+            },
+            {
+              "body": "通过 Alpha Radar、Signal Review、Elite SM 回看候选和过去信号。",
+              "title": "用 /radar 或 /review 复盘"
+            }
+          ]
+        }
+      },
+      "name": "しえすたんBot"
+    },
+    "tag-along-lens": {
+      "haystack": "tag-along-lens Tag-Along Lens yuki.k0024 yuki_k_02 analytics reaction-research リアクション駆動CA便乗判定 solana Solana contract address narratives active_research curiosity kogayuki nansen-bb-bot ca contract address smart money polymarket polymarket gamma api dexscreener reaction trigger smart-money/dex-trades smart-money/holdings smart-money/netflow mcap tier token-god-mode no runtime llm リアクション 便乗判定 Token God Mode detail link (/token-god-mode?tokenAddress=...) 24h labeled Smart Money DEX trades Smart Money holder count 24h/7d net capital flow Polymarket narrative context 4色deterministic verdict 5 credits per endpoint; 15 credits per request. 5-minute in-memory cache prevents duplicate Nansen API calls for the same CA. Node.js 20+ TypeScript Discord Bot discord.js v14 Nansen REST API v1 Railway 調査補助 CA投稿への🔍リアクション1つで、Nansen Smart Money、DexScreener MCAP、Polymarket文脈、Token God ModeリンクをEmbedで返すBot。 CA追跡 Token God Mode アルト部屋にCAが投下された時、lowcapBotで価格や流動性は見えても「smart wallets already in this?」は残りやすい。Tag-Along Lens は Solana CA を検知して🔍リアクションを自動付与し、クリックしたメンバーに Nansen Smart Money、DexScreener MCAP、Polymarket文脈、MCAP tier、Token God ModeリンクをEmbedで返す調査補助Bot。 lowcapBotで埋まらない「smart wallets already in this?」を、CA投稿へのリアクション1つで確認するためのBotです。 検知する Solana CAを検知し、アルト部屋の投稿に🔍を自動付与する 取得する Nansen 3 endpoints、DexScreener MCAP、Polymarket Gamma APIを並列取得する 判断する MCAP tier、4色判定、Token God Modeリンクで深掘りするか決める Solana CA自動検知 🔍リアクション自動付与 リアクション駆動Embed返信 Nansen 3 endpoints並列取得 DexScreener MCAP解決 Polymarket Gamma API文脈 MCAP tier adaptive display Nansen Token God Mode detail link API: smart-money/dex-trades API: smart-money/holdings API: smart-money/netflow API: Token God Mode detail link (/token-god-mode?tokenAddress=...) Signal: 24h labeled Smart Money DEX trades Signal: Smart Money holder count Signal: 24h/7d net capital flow Signal: MCAP tier Signal: Polymarket narrative context Signal: 4色deterministic verdict lowcapBotで埋まらない「smart wallets already in this?」をリアクション1つで確認する 3つのNansen endpointを並列取得し、1回15 creditsでSmart Money trades、holders、netflowを見る 同じCAの重複API呼び出しを5分in-memory cacheで抑える Polymarketはsports marketを除外し、runtime LLMなしのdeterministic判定で表示する Nansen detail buttonはToken God Modeのtoken-god-mode URLに修正済み CA投稿を検知する メンバーがアルト部屋に投下したSolana CAをBotが検知し、🔍リアクションを自動付与する。 🔍をクリックする 気になったメンバーがリアクションを押すと、Nansen、DexScreener、Polymarket Gamma APIを並列取得する。 Embedで根拠を見る smart-money/dex-trades、smart-money/holdings、smart-money/netflow、MCAP tier、4色判定、Token God Mode detail linkを確認する。 Research assist Reaction-driven CA follow-up check A bot that returns Smart Money, DexScreener MCAP, Polymarket context, and Token God Mode links from one reaction to a CA post. When a CA is posted in the alt channel, lowcapBot may show price and liquidity, but the question \"smart wallets already in this?\" can remain. Tag-Along Lens detects Solana CAs, automatically adds a magnifying-glass reaction, and returns an embed with Nansen Smart Money, DexScreener MCAP, Polymarket context, MCAP tier, and a Token God Mode link to the member who clicks it. A bot for answering the lowcapBot gap of \"smart wallets already in this?\" with one reaction on a CA post. Detect Detect Solana CAs and automatically add a magnifying-glass reaction in the alt channel Fetch Fetch three Nansen endpoints, DexScreener MCAP, and Polymarket Gamma API in parallel Decide Use MCAP tier, four-color verdict, and Token God Mode link to choose whether to dig deeper Automatic Solana CA detection Automatic magnifying-glass reaction Reaction-driven embed reply Parallel fetch of three Nansen endpoints DexScreener MCAP resolution Polymarket Gamma API context Signal: Four-color deterministic verdict Checks the lowcapBot gap of \"smart wallets already in this?\" with one reaction. Fetches three Nansen endpoints in parallel and reads Smart Money trades, holders, and netflow for 15 credits per run. Suppresses duplicate API calls for the same CA with a five-minute in-memory cache. Excludes sports markets from Polymarket and displays deterministic verdicts without a runtime LLM. The Nansen detail button is corrected to the Token God Mode token-god-mode URL. Detect a CA post The bot detects a Solana CA posted by a member in the alt channel and automatically adds a magnifying-glass reaction. Click the magnifying glass When an interested member reacts, the bot fetches Nansen, DexScreener, and Polymarket Gamma API in parallel. Review evidence in the embed Check smart-money/dex-trades, smart-money/holdings, smart-money/netflow, MCAP tier, four-color verdict, and Token God Mode detail link. 研究辅助 基于反应的CA跟随判断 对CA投稿点一次🔍反应，即返回Smart Money、DexScreener MCAP、Polymarket语境和Token God Mode链接的Bot。 合约地址 反应触发 当 alt 频道有人投放 CA 时，lowcapBot 可能能看到价格和流动性，但“smart wallets already in this?” 仍然会留下疑问。Tag-Along Lens 检测 Solana CA 并自动添加🔍反应，点击后向成员返回包含 Nansen Smart Money、DexScreener MCAP、Polymarket 语境、MCAP tier 和 Token God Mode 链接的 Embed。 用 CA 投稿上的一次反应，补上 lowcapBot 无法回答的“smart wallets already in this?”。 检测 检测 Solana CA，并在 alt 频道投稿上自动添加🔍 获取 并行获取 Nansen 3 endpoints、DexScreener MCAP、Polymarket Gamma API 判断 通过 MCAP tier、四色判定和 Token God Mode 链接决定是否深挖 Solana CA 自动检测 🔍反应自动添加 反应驱动 Embed 回复 Nansen 3 endpoints 并行获取 DexScreener MCAP 解析 Polymarket Gamma API 语境 MCAP tier 自适应展示 Nansen Token God Mode 详情链接 Signal: 四色 deterministic 判定 用一次反应确认 lowcapBot 无法覆盖的“smart wallets already in this?”。 并行获取 3 个 Nansen endpoint，以每次 15 credits 查看 Smart Money trades、holders、netflow。 对同一 CA 用 5 分钟 in-memory cache 抑制重复 API 调用。 Polymarket 排除 sports market，并在无 runtime LLM 的情况下用 deterministic 判定展示。 Nansen detail button 已修正为 Token God Mode 的 token-god-mode URL。 检测 CA 投稿 成员在 alt 频道投放 Solana CA 后，Bot 会检测并自动添加🔍反应。 点击🔍 感兴趣的成员点击反应后，Bot 会并行获取 Nansen、DexScreener、Polymarket Gamma API。 在 Embed 查看依据 确认 smart-money/dex-trades、smart-money/holdings、smart-money/netflow、MCAP tier、四色判定、Token God Mode detail link。",
+      "locales": {
+        "en": {
+          "capabilities": [
+            "Automatic Solana CA detection",
+            "Automatic magnifying-glass reaction",
+            "Reaction-driven embed reply",
+            "Parallel fetch of three Nansen endpoints",
+            "DexScreener MCAP resolution",
+            "Polymarket Gamma API context",
+            "MCAP tier adaptive display",
+            "Nansen Token God Mode detail link"
+          ],
+          "card_summary": "A bot that returns Smart Money, DexScreener MCAP, Polymarket context, and Token God Mode links from one reaction to a CA post.",
+          "category_label": "Research assist",
+          "detail_intro": "When a CA is posted in the alt channel, lowcapBot may show price and liquidity, but the question \"smart wallets already in this?\" can remain. Tag-Along Lens detects Solana CAs, automatically adds a magnifying-glass reaction, and returns an embed with Nansen Smart Money, DexScreener MCAP, Polymarket context, MCAP tier, and a Token God Mode link to the member who clicks it.",
+          "highlights": [
+            "Checks the lowcapBot gap of \"smart wallets already in this?\" with one reaction.",
+            "Fetches three Nansen endpoints in parallel and reads Smart Money trades, holders, and netflow for 15 credits per run.",
+            "Suppresses duplicate API calls for the same CA with a five-minute in-memory cache.",
+            "Excludes sports markets from Polymarket and displays deterministic verdicts without a runtime LLM.",
+            "The Nansen detail button is corrected to the Token God Mode token-god-mode URL."
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "API: smart-money/holdings",
+            "API: smart-money/netflow",
+            "API: Token God Mode detail link (/token-god-mode?tokenAddress=...)",
+            "Signal: 24h labeled Smart Money DEX trades",
+            "Signal: Smart Money holder count",
+            "Signal: 24h/7d net capital flow",
+            "Signal: MCAP tier",
+            "Signal: Polymarket narrative context",
+            "Signal: Four-color deterministic verdict"
+          ],
+          "objective_body": "A bot for answering the lowcapBot gap of \"smart wallets already in this?\" with one reaction on a CA post.",
+          "role_label": "Reaction-driven CA follow-up check",
+          "scene_points": [
+            {
+              "body": "Detect Solana CAs and automatically add a magnifying-glass reaction in the alt channel",
+              "title": "Detect"
+            },
+            {
+              "body": "Fetch three Nansen endpoints, DexScreener MCAP, and Polymarket Gamma API in parallel",
+              "title": "Fetch"
+            },
+            {
+              "body": "Use MCAP tier, four-color verdict, and Token God Mode link to choose whether to dig deeper",
+              "title": "Decide"
+            }
+          ],
+          "search_terms": [
+            "contract address",
+            "reaction trigger",
+            "Smart Money",
+            "Polymarket",
+            "Token God Mode"
+          ],
+          "usage_steps": [
+            {
+              "body": "The bot detects a Solana CA posted by a member in the alt channel and automatically adds a magnifying-glass reaction.",
+              "title": "Detect a CA post"
+            },
+            {
+              "body": "When an interested member reacts, the bot fetches Nansen, DexScreener, and Polymarket Gamma API in parallel.",
+              "title": "Click the magnifying glass"
+            },
+            {
+              "body": "Check smart-money/dex-trades, smart-money/holdings, smart-money/netflow, MCAP tier, four-color verdict, and Token God Mode detail link.",
+              "title": "Review evidence in the embed"
+            }
+          ]
+        },
+        "ja": {
+          "capabilities": [
+            "Solana CA自動検知",
+            "🔍リアクション自動付与",
+            "リアクション駆動Embed返信",
+            "Nansen 3 endpoints並列取得",
+            "DexScreener MCAP解決",
+            "Polymarket Gamma API文脈",
+            "MCAP tier adaptive display",
+            "Nansen Token God Mode detail link"
+          ],
+          "card_summary": "CA投稿への🔍リアクション1つで、Nansen Smart Money、DexScreener MCAP、Polymarket文脈、Token God ModeリンクをEmbedで返すBot。",
+          "category_label": "調査補助",
+          "detail_intro": "アルト部屋にCAが投下された時、lowcapBotで価格や流動性は見えても「smart wallets already in this?」は残りやすい。Tag-Along Lens は Solana CA を検知して🔍リアクションを自動付与し、クリックしたメンバーに Nansen Smart Money、DexScreener MCAP、Polymarket文脈、MCAP tier、Token God ModeリンクをEmbedで返す調査補助Bot。",
+          "highlights": [
+            "lowcapBotで埋まらない「smart wallets already in this?」をリアクション1つで確認する",
+            "3つのNansen endpointを並列取得し、1回15 creditsでSmart Money trades、holders、netflowを見る",
+            "同じCAの重複API呼び出しを5分in-memory cacheで抑える",
+            "Polymarketはsports marketを除外し、runtime LLMなしのdeterministic判定で表示する",
+            "Nansen detail buttonはToken God Modeのtoken-god-mode URLに修正済み"
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "API: smart-money/holdings",
+            "API: smart-money/netflow",
+            "API: Token God Mode detail link (/token-god-mode?tokenAddress=...)",
+            "Signal: 24h labeled Smart Money DEX trades",
+            "Signal: Smart Money holder count",
+            "Signal: 24h/7d net capital flow",
+            "Signal: MCAP tier",
+            "Signal: Polymarket narrative context",
+            "Signal: 4色deterministic verdict"
+          ],
+          "objective_body": "lowcapBotで埋まらない「smart wallets already in this?」を、CA投稿へのリアクション1つで確認するためのBotです。",
+          "role_label": "リアクション駆動CA便乗判定",
+          "scene_points": [
+            {
+              "body": "Solana CAを検知し、アルト部屋の投稿に🔍を自動付与する",
+              "title": "検知する"
+            },
+            {
+              "body": "Nansen 3 endpoints、DexScreener MCAP、Polymarket Gamma APIを並列取得する",
+              "title": "取得する"
+            },
+            {
+              "body": "MCAP tier、4色判定、Token God Modeリンクで深掘りするか決める",
+              "title": "判断する"
+            }
+          ],
+          "search_terms": [
+            "CA追跡",
+            "リアクション",
+            "Smart Money",
+            "Polymarket",
+            "Token God Mode"
+          ],
+          "usage_steps": [
+            {
+              "body": "メンバーがアルト部屋に投下したSolana CAをBotが検知し、🔍リアクションを自動付与する。",
+              "title": "CA投稿を検知する"
+            },
+            {
+              "body": "気になったメンバーがリアクションを押すと、Nansen、DexScreener、Polymarket Gamma APIを並列取得する。",
+              "title": "🔍をクリックする"
+            },
+            {
+              "body": "smart-money/dex-trades、smart-money/holdings、smart-money/netflow、MCAP tier、4色判定、Token God Mode detail linkを確認する。",
+              "title": "Embedで根拠を見る"
+            }
+          ]
+        },
+        "zh-Hans": {
+          "capabilities": [
+            "Solana CA 自动检测",
+            "🔍反应自动添加",
+            "反应驱动 Embed 回复",
+            "Nansen 3 endpoints 并行获取",
+            "DexScreener MCAP 解析",
+            "Polymarket Gamma API 语境",
+            "MCAP tier 自适应展示",
+            "Nansen Token God Mode 详情链接"
+          ],
+          "card_summary": "对CA投稿点一次🔍反应，即返回Smart Money、DexScreener MCAP、Polymarket语境和Token God Mode链接的Bot。",
+          "category_label": "研究辅助",
+          "detail_intro": "当 alt 频道有人投放 CA 时，lowcapBot 可能能看到价格和流动性，但“smart wallets already in this?” 仍然会留下疑问。Tag-Along Lens 检测 Solana CA 并自动添加🔍反应，点击后向成员返回包含 Nansen Smart Money、DexScreener MCAP、Polymarket 语境、MCAP tier 和 Token God Mode 链接的 Embed。",
+          "highlights": [
+            "用一次反应确认 lowcapBot 无法覆盖的“smart wallets already in this?”。",
+            "并行获取 3 个 Nansen endpoint，以每次 15 credits 查看 Smart Money trades、holders、netflow。",
+            "对同一 CA 用 5 分钟 in-memory cache 抑制重复 API 调用。",
+            "Polymarket 排除 sports market，并在无 runtime LLM 的情况下用 deterministic 判定展示。",
+            "Nansen detail button 已修正为 Token God Mode 的 token-god-mode URL。"
+          ],
+          "nansen_tags": [
+            "API: smart-money/dex-trades",
+            "API: smart-money/holdings",
+            "API: smart-money/netflow",
+            "API: Token God Mode detail link (/token-god-mode?tokenAddress=...)",
+            "Signal: 24h labeled Smart Money DEX trades",
+            "Signal: Smart Money holder count",
+            "Signal: 24h/7d net capital flow",
+            "Signal: MCAP tier",
+            "Signal: Polymarket narrative context",
+            "Signal: 四色 deterministic 判定"
+          ],
+          "objective_body": "用 CA 投稿上的一次反应，补上 lowcapBot 无法回答的“smart wallets already in this?”。",
+          "role_label": "基于反应的CA跟随判断",
+          "scene_points": [
+            {
+              "body": "检测 Solana CA，并在 alt 频道投稿上自动添加🔍",
+              "title": "检测"
+            },
+            {
+              "body": "并行获取 Nansen 3 endpoints、DexScreener MCAP、Polymarket Gamma API",
+              "title": "获取"
+            },
+            {
+              "body": "通过 MCAP tier、四色判定和 Token God Mode 链接决定是否深挖",
+              "title": "判断"
+            }
+          ],
+          "search_terms": [
+            "合约地址",
+            "反应触发",
+            "Smart Money",
+            "Polymarket",
+            "Token God Mode"
+          ],
+          "usage_steps": [
+            {
+              "body": "成员在 alt 频道投放 Solana CA 后，Bot 会检测并自动添加🔍反应。",
+              "title": "检测 CA 投稿"
+            },
+            {
+              "body": "感兴趣的成员点击反应后，Bot 会并行获取 Nansen、DexScreener、Polymarket Gamma API。",
+              "title": "点击🔍"
+            },
+            {
+              "body": "确认 smart-money/dex-trades、smart-money/holdings、smart-money/netflow、MCAP tier、四色判定、Token God Mode detail link。",
+              "title": "在 Embed 查看依据"
+            }
+          ]
+        }
+      },
+      "name": "Tag-Along Lens"
+    }
+  },
+  "supportedLocales": [
+    "ja",
+    "en",
+    "zh-Hans"
+  ],
+  "ui": {
+    "en": {
+      "cta": {
+        "aria_label": "Try Nansen - official affiliate link",
+        "button": "Open Nansen ↗",
+        "note": "Official affiliate link",
+        "subcopy": "Explore the onchain analytics used by these 9 submissions.",
+        "title": "Try Nansen"
+      },
+      "details": {
+        "actions": {
+          "dashboard": "Open dashboard",
+          "demo": "View demo",
+          "github": "View on GitHub"
+        },
+        "capabilities": "Capabilities",
+        "close": "Close details",
+        "creator": "Creator",
+        "fallback_japanese": "Showing Japanese details because this item has no copy for the selected language.",
+        "highlights": "Highlights",
+        "nansen": "Nansen API / Signals",
+        "objective": "Objective",
+        "open": "Open details",
+        "return": "Back to list",
+        "tech": "View technical info",
+        "usage": "How to use"
+      },
+      "footer": {
+        "articles": "Articles",
+        "description": "Nansen API Bot Hackathon — April 2026",
+        "discord": "Join bb Discord ↗",
+        "discord_aria_label": "Open the boarding bridge official Discord",
+        "links_aria_label": "Community links",
+        "official_site": "Official site",
+        "privacy": "Privacy policy",
+        "shop": "Shop",
+        "stat_chats_aria_label": "150K monthly chats",
+        "stat_chats_label": "Monthly chats",
+        "stat_events_aria_label": "200 plus events hosted",
+        "stat_events_label": "Events hosted",
+        "stat_members_aria_label": "30K Discord members",
+        "stat_members_label": "Discord members",
+        "title": "Hosted by boarding bridge"
+      },
+      "guide": {
+        "all": "All",
+        "category_list_aria_label": "Purpose categories",
+        "close": "Close",
+        "community_use": "Use in community",
+        "discovery_kicker": "BOT DISCOVERY",
+        "empty": "No bots match. Adjust the search or purpose.",
+        "follow_review": "Track and review",
+        "initial_signal": "Catch early signals",
+        "kicker": "NANSEN BOT NAVIGATOR",
+        "less": "Show 6",
+        "map_aria_label": "Purpose map",
+        "more": "Show {count} more",
+        "note": "Filter the 9 bots by goal, chain, or bot name.",
+        "open": "Open",
+        "purpose_kicker": "PURPOSE MAP",
+        "purpose_title": "Explore by purpose",
+        "range": "Showing 1-{end} of {total}",
+        "range_empty": "Showing 0",
+        "reset": "Show all",
+        "results_aria_label": "Purpose-filtered bot list",
+        "results_note_all": "Find a bot by goal, chain, or bot name",
+        "results_note_filtered": "Purpose filter is active. Use search to narrow the list.",
+        "results_title_all": "Find a bot",
+        "results_title_category": "{category} bots",
+        "search_label": "Search Navigator bots",
+        "search_placeholder": "Search by goal, chain, or bot name",
+        "title": "Find bots by purpose",
+        "verify_evidence": "Verify evidence",
+        "wallet_tracking": "Track wallets"
+      },
+      "hero": {
+        "funnel_aria_label": "$1,000 prize review funnel: 41 registered, 24 bots running, 10 CLI linked, 9 submitted",
+        "host": "Hosted by bb",
+        "note": "A path from registration to running bots, CLI integration, and final submission for the $1,000 prize review. The list below shows each bot's role, Nansen usage, and public links.",
+        "prize_panel_label": "Winner Bot Prize $1,000 for top hackathon bot",
+        "prize_stack_label": "$1,000 prize and final submission summary",
+        "step_cli": "CLI linked",
+        "step_registered": "Registered",
+        "step_running": "Bots running",
+        "step_submitted": "Submitted",
+        "submission_unit": "people",
+        "summary_copy": "Reached final submission from 41 completed registrations",
+        "summary_kicker": "Final submissions",
+        "summary_kicker_sub": "submitted bots"
+      },
+      "language": {
+        "label": "Display language"
+      },
+      "submissions": {
+        "empty": "No submissions match. Adjust your search terms.",
+        "note": "Each card highlights Nansen API usage, user scenarios, and practical usage flow.",
+        "reset": "Reset filters",
+        "result_count": "Showing {count}",
+        "search_label": "Search submissions",
+        "search_placeholder": "Search by bot, use case, chain, or API",
+        "support": "A showcase of submitted bots organized from READMEs, demos, and public links. Compare by purpose and find the next bot to try.",
+        "title": "Submissions",
+        "total_aria_label": "9 total submissions"
+      }
+    },
+    "ja": {
+      "cta": {
+        "aria_label": "Nansenを試す - 公式アフィリエイトリンク",
+        "button": "Nansenを開く ↗",
+        "note": "公式アフィリエイトリンク",
+        "subcopy": "9作品が活用したオンチェーン分析を、自分でも触ってみる。",
+        "title": "Nansenを試す"
+      },
+      "details": {
+        "actions": {
+          "dashboard": "ダッシュボードを開く",
+          "demo": "デモを見る",
+          "github": "GitHubで見る"
+        },
+        "capabilities": "できること",
+        "close": "詳細を閉じる",
+        "creator": "作成者",
+        "fallback_japanese": "この詳細は日本語版を表示しています。",
+        "highlights": "見どころ",
+        "nansen": "Nansen API / Signals",
+        "objective": "目的",
+        "open": "詳細を開く",
+        "return": "一覧へ戻る",
+        "tech": "技術情報を見る",
+        "usage": "使い方"
+      },
+      "footer": {
+        "articles": "記事",
+        "description": "Nansen API Bot Hackathon — 2026年4月開催",
+        "discord": "bb公式Discord ↗",
+        "discord_aria_label": "boarding bridge公式Discordを開く",
+        "links_aria_label": "コミュニティリンク",
+        "official_site": "公式サイト",
+        "privacy": "プライバシーポリシー",
+        "shop": "ショップ",
+        "stat_chats_aria_label": "月間チャット 150K",
+        "stat_chats_label": "月間チャット",
+        "stat_events_aria_label": "開催イベント 200以上",
+        "stat_events_label": "開催イベント",
+        "stat_members_aria_label": "Discordメンバー 30K",
+        "stat_members_label": "Discordメンバー",
+        "title": "主催: boarding bridge"
+      },
+      "guide": {
+        "all": "すべて",
+        "category_list_aria_label": "目的カテゴリ",
+        "close": "閉じる",
+        "community_use": "コミュニティで使う",
+        "discovery_kicker": "BOT DISCOVERY",
+        "empty": "一致するBotがありません。検索語または目的を調整してください。",
+        "follow_review": "継続・振り返る",
+        "initial_signal": "初動を拾う",
+        "kicker": "NANSEN BOT NAVIGATOR",
+        "less": "6件に戻す",
+        "map_aria_label": "目的マップ",
+        "more": "さらに{count}件を見る",
+        "note": "やりたいこと、チェーン、Bot名から9つのBotを絞り込めます。",
+        "open": "開く",
+        "purpose_kicker": "PURPOSE MAP",
+        "purpose_title": "目的から探す",
+        "range": "全{total}件中 1-{end}件を表示",
+        "range_empty": "全0件",
+        "reset": "すべて表示",
+        "results_aria_label": "目的別Botリスト",
+        "results_note_all": "やりたいこと、チェーン、Bot名からBotを見つける",
+        "results_note_filtered": "目的を絞り込み中。検索でさらに候補を絞れます。",
+        "results_title_all": "Botを探す",
+        "results_title_category": "{category}のBot",
+        "search_label": "NavigatorのBot検索",
+        "search_placeholder": "目的、チェーン、Bot名で検索",
+        "title": "目的別にBotを探す",
+        "verify_evidence": "根拠を確認する",
+        "wallet_tracking": "ウォレットを追う"
+      },
+      "hero": {
+        "funnel_aria_label": "$1,000賞金審査への到達プロセス: 登録完了 41人、Bot稼働 24人、CLI連携 10人、提出 9人",
+        "host": "主催:bb",
+        "note": "登録完了からBot稼働、CLI連携、提出へ進み、$1,000賞金審査の対象になるまでの到達プロセス。下の一覧では9作品の役割、Nansen活用、公開導線を確認できます。",
+        "prize_panel_label": "Winner Bot Prize $1,000 for top hackathon bot",
+        "prize_stack_label": "$1,000賞金と最終提出の概要",
+        "step_cli": "CLI連携",
+        "step_registered": "登録完了",
+        "step_running": "Bot稼働",
+        "step_submitted": "提出",
+        "submission_unit": "人",
+        "summary_copy": "登録完了41人のうち、提出まで到達した",
+        "summary_kicker": "最終提出",
+        "summary_kicker_sub": "final submissions"
+      },
+      "language": {
+        "label": "表示言語"
+      },
+      "submissions": {
+        "empty": "一致する提出作品がありません。検索語を調整してください。",
+        "note": "Nansen API の使い方、ユーザー場面、実利用フローを作品ごとに確認できます。",
+        "reset": "絞り込みをリセット",
+        "result_count": "{count}件を表示中",
+        "search_label": "提出作品を検索",
+        "search_placeholder": "Bot名、用途、チェーン、APIで検索",
+        "support": "README、デモ、公開リンクから整理した提出作品のショーケース。目的別に見比べ、次に試すBotを探せます。",
+        "title": "提出作品",
+        "total_aria_label": "総提出数 9件"
+      }
+    },
+    "zh-Hans": {
+      "cta": {
+        "aria_label": "试用 Nansen - 官方联盟链接",
+        "button": "打开 Nansen ↗",
+        "note": "官方联盟链接",
+        "subcopy": "亲自体验这9个作品使用的链上分析。",
+        "title": "试用 Nansen"
+      },
+      "details": {
+        "actions": {
+          "dashboard": "打开看板",
+          "demo": "查看 Demo",
+          "github": "查看 GitHub"
+        },
+        "capabilities": "功能",
+        "close": "关闭详情",
+        "creator": "创作者",
+        "fallback_japanese": "由于该作品没有所选语言的详情，正在显示日语详情。",
+        "highlights": "亮点",
+        "nansen": "Nansen API / Signals",
+        "objective": "目标",
+        "open": "打开详情",
+        "return": "返回列表",
+        "tech": "查看技术信息",
+        "usage": "使用方法"
+      },
+      "footer": {
+        "articles": "文章",
+        "description": "Nansen API Bot Hackathon — 2026年4月举办",
+        "discord": "加入 bb 官方 Discord ↗",
+        "discord_aria_label": "打开 boarding bridge 官方 Discord",
+        "links_aria_label": "社区链接",
+        "official_site": "官方网站",
+        "privacy": "隐私政策",
+        "shop": "商店",
+        "stat_chats_aria_label": "每月聊天 150K",
+        "stat_chats_label": "每月聊天",
+        "stat_events_aria_label": "举办活动 200以上",
+        "stat_events_label": "举办活动",
+        "stat_members_aria_label": "Discord成员 30K",
+        "stat_members_label": "Discord成员",
+        "title": "主办: boarding bridge"
+      },
+      "guide": {
+        "all": "全部",
+        "category_list_aria_label": "目的分类",
+        "close": "关闭",
+        "community_use": "社区使用",
+        "discovery_kicker": "BOT DISCOVERY",
+        "empty": "没有匹配的Bot。请调整搜索词或目的。",
+        "follow_review": "跟踪与复盘",
+        "initial_signal": "捕捉早期信号",
+        "kicker": "NANSEN BOT NAVIGATOR",
+        "less": "返回6件",
+        "map_aria_label": "目的地图",
+        "more": "再看{count}件",
+        "note": "可按想做的事、链或Bot名筛选9个Bot。",
+        "open": "打开",
+        "purpose_kicker": "PURPOSE MAP",
+        "purpose_title": "从目的查找",
+        "range": "共{total}件，显示1-{end}件",
+        "range_empty": "共0件",
+        "reset": "显示全部",
+        "results_aria_label": "按目的筛选的Bot列表",
+        "results_note_all": "按目的、链或Bot名寻找Bot",
+        "results_note_filtered": "已按目的筛选。可继续用搜索缩小范围。",
+        "results_title_all": "寻找Bot",
+        "results_title_category": "{category} Bot",
+        "search_label": "搜索 Navigator Bot",
+        "search_placeholder": "按目的、链或Bot名搜索",
+        "title": "按目的寻找Bot",
+        "verify_evidence": "确认依据",
+        "wallet_tracking": "追踪钱包"
+      },
+      "hero": {
+        "funnel_aria_label": "$1,000 奖金评审路径：完成报名 41人，Bot运行 24人，CLI接入 10人，提交 9人",
+        "host": "主办: bb",
+        "note": "从报名、Bot运行、CLI接入到最终提交，进入 $1,000 奖金评审的路径。下面的列表展示9个作品的角色、Nansen用法和公开链接。",
+        "prize_panel_label": "Winner Bot Prize $1,000 for top hackathon bot",
+        "prize_stack_label": "$1,000奖金与最终提交概览",
+        "step_cli": "CLI接入",
+        "step_registered": "完成报名",
+        "step_running": "Bot运行",
+        "step_submitted": "提交",
+        "submission_unit": "人",
+        "summary_copy": "41名完成报名者中，最终完成提交",
+        "summary_kicker": "最终提交",
+        "summary_kicker_sub": "final submissions"
+      },
+      "language": {
+        "label": "显示语言"
+      },
+      "submissions": {
+        "empty": "没有匹配的提交作品。请调整搜索词。",
+        "note": "每个作品都整理了 Nansen API 用法、用户场景和实际使用流程。",
+        "reset": "重置筛选",
+        "result_count": "正在显示{count}件",
+        "search_label": "搜索提交作品",
+        "search_placeholder": "按Bot名、用途、链或API搜索",
+        "support": "基于 README、Demo 和公开链接整理的作品展示。可按目的比较，找到下一个想尝试的Bot。",
+        "title": "提交作品",
+        "total_aria_label": "提交作品总数 9件"
+      }
+    }
+  },
+  "updatedAt": "2026-05-17T00:00:00+09:00"
+}
+    </script>
+    <!-- END GENERATED SHOWCASE I18N -->
 
     <script>
       (() => {
@@ -8811,7 +11307,87 @@
         const guideResetButtons = Array.from(document.querySelectorAll('#submissions [data-guide-action="reset"]'));
         const guideMoreButton = document.querySelector('#submissions [data-guide-action="more"]');
         const guideToggleButton = document.querySelector('#submissions [data-guide-action="toggle"]');
+        const languageButtons = Array.from(document.querySelectorAll('[data-lang-option]'));
+        const i18nElement = document.getElementById('showcase-i18n-data');
         const guidePageSize = 6;
+        const parseI18nData = () => {
+          if (!i18nElement) return null;
+          try {
+            return JSON.parse(i18nElement.textContent || '{}');
+          } catch (error) {
+            console.error('Failed to parse showcase i18n data', error);
+            return null;
+          }
+        };
+        const i18nData = parseI18nData() || { defaultLocale: 'ja', supportedLocales: ['ja'], ui: {}, submissions: {} };
+        const defaultLocale = i18nData.defaultLocale || 'ja';
+        const supportedLocales = Array.isArray(i18nData.supportedLocales) ? i18nData.supportedLocales : [defaultLocale];
+        const isSupportedLocale = (locale) => supportedLocales.includes(locale);
+        const safeLocalStorage = {
+          get(key) {
+            try {
+              return window.localStorage?.getItem(key) || null;
+            } catch {
+              return null;
+            }
+          },
+          set(key, value) {
+            try {
+              window.localStorage?.setItem(key, value);
+            } catch {
+              // Ignore private-mode or blocked storage.
+            }
+          },
+        };
+        const prizePanel = document.querySelector('.hero-prize-panel');
+        const prizeVideo = prizePanel?.querySelector('.hero-prize-art');
+        const setupPrizeMedia = () => {
+          if (!prizePanel || !prizeVideo) return;
+          const showVideo = () => {
+            prizePanel.classList.add('is-video-ready');
+          };
+          const showFallback = () => {
+            prizePanel.classList.remove('is-video-ready');
+          };
+          prizeVideo.addEventListener('playing', showVideo, { once: true });
+          prizeVideo.addEventListener('error', showFallback);
+          setTimeout(() => {
+            if (prizeVideo.readyState >= 3 && !prizeVideo.paused) {
+              showVideo();
+            }
+          }, 1200);
+        };
+        let currentLang = defaultLocale;
+        const getPathValue = (source, path) => path.split('.').reduce((value, segment) => value?.[segment], source);
+        const formatMessage = (template, values = {}) => String(template || '').replace(/\{(\w+)\}/g, (_, key) => values[key] ?? '');
+        const localeFallbackChain = (locale) => {
+          const chain = [locale, 'en', defaultLocale].filter(Boolean);
+          return [...new Set(chain)].filter(isSupportedLocale);
+        };
+        const t = (key, values = {}) => {
+          const cleanKey = key.replace(/^ui\./, '');
+          for (const locale of localeFallbackChain(currentLang)) {
+            const value = getPathValue(i18nData.ui?.[locale], cleanKey);
+            if (value) {
+              return formatMessage(value, values);
+            }
+          }
+          return formatMessage(key, values);
+        };
+        const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        })[char]);
+        const guideCategoryKeys = {
+          'initial-signal': 'initial_signal',
+          'verify-evidence': 'verify_evidence',
+          'follow-review': 'follow_review',
+          'community-use': 'community_use',
+          'wallet-tracking': 'wallet_tracking',
+        };
         const guideCategories = {
           'initial-signal': '初動を拾う',
           'verify-evidence': '根拠を確認する',
@@ -8908,14 +11484,47 @@
         let returnListState = null;
         let activeJumpCard = null;
 
-        const normalize = (value) => value.toLowerCase().replace(/\s+/g, ' ').trim();
+        const normalize = (value) => String(value || '').normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
         const getCardDetails = (card) => Array.from(card?.children || []).find((child) => child.tagName === 'DETAILS');
         const getDetailsSummary = (details) => Array.from(details?.children || []).find((child) => child.tagName === 'SUMMARY');
+        const getDirectChild = (element, selector) => Array.from(element?.children || []).find((child) => child.matches(selector));
+        const getSubmissionEntry = (id) => i18nData.submissions?.[id] || null;
+        const resolveSubmissionLocale = (id) => {
+          const entry = getSubmissionEntry(id);
+          for (const locale of localeFallbackChain(currentLang)) {
+            const copy = entry?.locales?.[locale];
+            if (copy) {
+              return { copy, locale };
+            }
+          }
+          return { copy: null, locale: null };
+        };
+        const getSubmissionLocale = (id) => {
+          return resolveSubmissionLocale(id).copy;
+        };
+        const getGuideCategoryLabel = (category) => {
+          const key = guideCategoryKeys[category];
+          return key ? t(`ui.guide.${key}`) : guideCategories[category] || category;
+        };
 
         const updateDetailsSummaryLabel = (details) => {
           const summary = getDetailsSummary(details);
           if (!summary) return;
-          summary.textContent = details.open ? '詳細を閉じる' : '詳細を開く';
+          summary.textContent = details.open ? t('ui.details.close') : t('ui.details.open');
+        };
+
+        const updateDetailLanguageNote = (card) => {
+          const showcase = card.querySelector('.details-showcase');
+          if (!showcase) return;
+          let note = showcase.querySelector('.detail-language-note');
+          if (!note) {
+            note = document.createElement('p');
+            note.className = 'detail-language-note';
+            showcase.prepend(note);
+          }
+          const { locale } = resolveSubmissionLocale(card.dataset.submission);
+          note.textContent = t('ui.details.fallback_japanese');
+          note.hidden = currentLang === defaultLocale || locale !== defaultLocale;
         };
 
         const captureReturnState = () => ({
@@ -8935,6 +11544,7 @@
           const details = getCardDetails(card);
           if (!details) return;
           updateDetailsSummaryLabel(details);
+          updateDetailLanguageNote(card);
           const summary = getDetailsSummary(details);
           summary?.addEventListener('click', () => {
             if (!details.open) {
@@ -9025,8 +11635,11 @@
           const query = normalize(guideSearch?.value || '');
           const hasActiveFilter = activeGuideCategory !== 'all' || query !== '';
           const filteredItems = guideItems.filter((item) => {
-            const categoryLabel = guideCategories[item.category] || '';
-            const searchText = normalize([item.name, item.summary, categoryLabel, item.creator, item.tech].join(' '));
+            const categoryLabel = getGuideCategoryLabel(item.category);
+            const submissionId = item.id.replace(/^card-/, '');
+            const submission = getSubmissionEntry(submissionId);
+            const copy = getSubmissionLocale(submissionId);
+            const searchText = normalize([item.name, copy?.card_summary || item.summary, categoryLabel, item.creator, item.tech, submission?.haystack || ''].join(' '));
             const categoryMatch = activeGuideCategory === 'all' || item.category === activeGuideCategory;
             const queryMatch = query === '' || searchText.includes(query);
             return categoryMatch && queryMatch;
@@ -9040,32 +11653,36 @@
 
           guideList.innerHTML = '';
           pageItems.forEach((item) => {
-            const categoryLabel = guideCategories[item.category] || '';
+            const submissionId = item.id.replace(/^card-/, '');
+            const copy = getSubmissionLocale(submissionId);
+            const categoryLabel = getGuideCategoryLabel(item.category);
             const entry = document.createElement('li');
             entry.className = 'guide-item';
             entry.innerHTML = `
-                <span class="guide-avatar" aria-hidden="true"><img src="${item.avatar}" alt="" loading="lazy" /></span>
+                <span class="guide-avatar" aria-hidden="true"><img src="${escapeHtml(item.avatar)}" alt="" loading="lazy" /></span>
                 <div class="guide-item-copy">
-                  <span class="guide-badge">${categoryLabel}</span>
-                  <strong>${item.name}</strong>
-                  <p>${item.summary}</p>
+                  <span class="guide-badge">${escapeHtml(categoryLabel)}</span>
+                  <strong>${escapeHtml(item.name)}</strong>
+                  <p>${escapeHtml(copy?.card_summary || item.summary)}</p>
                 </div>
-              <button type="button" data-guide-target="${item.id}">詳細を開く</button>
+              <button type="button" data-guide-target="${escapeHtml(item.id)}">${escapeHtml(t('ui.details.open'))}</button>
             `;
             guideList.appendChild(entry);
           });
 
           if (guideRange) {
             const end = Math.min(pageItems.length, total);
-            guideRange.textContent = total === 0 ? '全0件' : `全${total}件中 1-${end}件を表示`;
+            guideRange.textContent = total === 0 ? t('ui.guide.range_empty') : t('ui.guide.range', { total, end });
           }
           if (guideResultsTitle) {
-            guideResultsTitle.textContent = activeGuideCategory === 'all' ? 'Botを探す' : `${guideCategories[activeGuideCategory]}のBot`;
+            guideResultsTitle.textContent = activeGuideCategory === 'all'
+              ? t('ui.guide.results_title_all')
+              : t('ui.guide.results_title_category', { category: getGuideCategoryLabel(activeGuideCategory) });
           }
           if (guideResultsNote) {
             guideResultsNote.textContent = activeGuideCategory === 'all'
-              ? 'やりたいこと、チェーン、Bot名からBotを見つける'
-              : '目的を絞り込み中。検索でさらに候補を絞れます。';
+              ? t('ui.guide.results_note_all')
+              : t('ui.guide.results_note_filtered');
           }
           if (guideEmpty) {
             guideEmpty.hidden = total !== 0;
@@ -9074,7 +11691,7 @@
             const remaining = Math.max(0, total - pageItems.length);
             guideMoreButton.hidden = total <= guidePageSize;
             guideMoreButton.setAttribute('aria-expanded', String(guideExpanded));
-            guideMoreButton.textContent = guideExpanded ? '6件に戻す' : `さらに${remaining}件を見る`;
+            guideMoreButton.textContent = guideExpanded ? t('ui.guide.less') : t('ui.guide.more', { count: remaining });
           }
           guideResetButtons.forEach((button) => {
             button.hidden = !hasActiveFilter;
@@ -9090,7 +11707,7 @@
           guideBody?.setAttribute('aria-hidden', String(collapsed));
           if (guideToggleButton) {
             guideToggleButton.setAttribute('aria-expanded', String(!collapsed));
-            guideToggleButton.textContent = collapsed ? '開く' : '閉じる';
+            guideToggleButton.textContent = collapsed ? t('ui.guide.open') : t('ui.guide.close');
           }
         };
 
@@ -9104,6 +11721,249 @@
             }
           }
           renderGuide();
+        };
+
+        const syncUrlLanguage = (lang) => {
+          const url = new URL(window.location.href);
+          url.searchParams.set('lang', lang);
+          try {
+            history.replaceState(null, '', url.toString());
+          } catch {
+            history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+          }
+        };
+
+        const mapNavigatorLanguage = (locale) => {
+          const normalizedLocale = String(locale || '').toLowerCase();
+          if (normalizedLocale === 'ja' || normalizedLocale.startsWith('ja-')) return 'ja';
+          if (normalizedLocale === 'en' || normalizedLocale.startsWith('en-')) return 'en';
+          if (
+            normalizedLocale === 'zh' ||
+            normalizedLocale === 'zh-cn' ||
+            normalizedLocale === 'zh-sg' ||
+            normalizedLocale === 'zh-my' ||
+            normalizedLocale.startsWith('zh-hans')
+          ) {
+            return 'zh-Hans';
+          }
+          // zh-Hant is intentionally mapped to zh-Hans until full Traditional Chinese copy is available.
+          if (
+            normalizedLocale === 'zh-tw' ||
+            normalizedLocale === 'zh-hk' ||
+            normalizedLocale === 'zh-mo' ||
+            normalizedLocale.startsWith('zh-hant')
+          ) {
+            return 'zh-Hans';
+          }
+          return null;
+        };
+
+        const resolveInitialLanguage = () => {
+          const url = new URL(window.location.href);
+          const requested = url.searchParams.get('lang');
+          if (requested !== null && !isSupportedLocale(requested)) {
+            return { lang: defaultLocale, source: 'invalid-url', replaceUrl: true };
+          }
+          if (isSupportedLocale(requested)) {
+            return { lang: requested, source: 'url', replaceUrl: false };
+          }
+          const stored = safeLocalStorage.get('showcaseLang');
+          if (isSupportedLocale(stored)) {
+            return { lang: stored, source: 'localStorage', replaceUrl: Boolean(requested) };
+          }
+          const navigatorLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+            ? navigator.languages
+            : [navigator.language];
+          for (const candidate of navigatorLanguages) {
+            const mapped = mapNavigatorLanguage(candidate);
+            if (isSupportedLocale(mapped)) {
+              return { lang: mapped, source: 'navigator', replaceUrl: Boolean(requested) };
+            }
+          }
+          return { lang: defaultLocale, source: 'default', replaceUrl: Boolean(requested) };
+        };
+
+        const updateLanguageButtons = () => {
+          languageButtons.forEach((button) => {
+            const selected = button.dataset.langOption === currentLang;
+            button.setAttribute('aria-pressed', String(selected));
+          });
+        };
+
+        const applyStaticI18n = () => {
+          document.querySelectorAll('[data-i18n]').forEach((element) => {
+            element.textContent = t(element.dataset.i18n || '');
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+            element.setAttribute('placeholder', t(element.dataset.i18nPlaceholder || ''));
+          });
+          document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
+            element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel || ''));
+          });
+          document.querySelector('.language-switcher')?.setAttribute('aria-label', t('ui.language.label'));
+          document.querySelector('.language-options')?.setAttribute('aria-label', t('ui.language.label'));
+          document.querySelector('.toolbar')?.setAttribute('aria-label', t('ui.submissions.search_label'));
+          searchInput?.setAttribute('aria-label', t('ui.submissions.search_label'));
+          document.querySelectorAll('.card-return-link').forEach((link) => {
+            link.textContent = t('ui.details.return');
+          });
+          document.querySelectorAll('.detail-tech > summary').forEach((summary) => {
+            summary.textContent = t('ui.details.tech');
+          });
+          document.querySelectorAll('.detail-actions a').forEach((link) => {
+            const href = link.getAttribute('href') || '';
+            if (href.includes('github.com')) {
+              link.textContent = t('ui.details.actions.github');
+            } else if (href.includes('discord.com')) {
+              link.textContent = t('ui.details.actions.demo');
+            } else {
+              link.textContent = t('ui.details.actions.dashboard');
+            }
+          });
+          document.querySelectorAll('.card-meta, .detail-author').forEach((element) => {
+            const authorLink = element.querySelector('a');
+            if (!authorLink) return;
+            element.textContent = `${t('ui.details.creator')}: `;
+            element.appendChild(authorLink);
+          });
+        };
+
+        const replaceList = (list, values = []) => {
+          if (!list || !Array.isArray(values)) return;
+          list.textContent = '';
+          values.forEach((value) => {
+            const item = document.createElement('li');
+            item.textContent = value;
+            list.appendChild(item);
+          });
+        };
+
+        const replaceScenePoints = (list, points = []) => {
+          if (!list || !Array.isArray(points)) return;
+          list.textContent = '';
+          points.forEach((point) => {
+            const item = document.createElement('li');
+            const wrap = document.createElement('div');
+            const title = document.createElement('strong');
+            const body = document.createElement('span');
+            title.textContent = point.title || '';
+            body.textContent = point.body || '';
+            wrap.append(title, body);
+            item.appendChild(wrap);
+            list.appendChild(item);
+          });
+        };
+
+        const replaceTags = (container, values = []) => {
+          if (!container || !Array.isArray(values)) return;
+          container.textContent = '';
+          values.forEach((value) => {
+            const tag = document.createElement('span');
+            tag.textContent = value;
+            container.appendChild(tag);
+          });
+        };
+
+        const replaceUsageSteps = (list, steps = []) => {
+          if (!list || !Array.isArray(steps)) return;
+          list.textContent = '';
+          steps.forEach((step, index) => {
+            const item = document.createElement('li');
+            item.className = 'detail-step';
+            const number = document.createElement('span');
+            number.className = 'detail-step-number';
+            number.textContent = String(index + 1);
+            const icon = document.createElement('span');
+            icon.className = 'detail-step-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            const copy = document.createElement('div');
+            const title = document.createElement('p');
+            title.className = 'detail-step-title';
+            title.textContent = step.title || '';
+            const body = document.createElement('p');
+            body.className = 'detail-step-copy';
+            body.textContent = step.body || '';
+            copy.append(title, body);
+            item.append(number, icon, copy);
+            list.appendChild(item);
+          });
+        };
+
+        const applyDetailCopy = (card, copy) => {
+          const detailIntro = card.querySelector('.details-showcase .detail-intro');
+          if (detailIntro) detailIntro.textContent = copy.detail_intro || '';
+          const panels = Array.from(card.querySelectorAll('.detail-columns .detail-panel'));
+          const objectivePanel = panels[0];
+          const capabilitiesPanel = panels[1];
+          const nansenPanel = panels[2];
+          const highlightsPanel = panels[3];
+
+          const objectiveTitle = objectivePanel?.querySelector('h4');
+          if (objectiveTitle) objectiveTitle.textContent = t('ui.details.objective');
+          const objectiveBody = objectivePanel?.querySelector(':scope > p');
+          if (objectiveBody) objectiveBody.textContent = copy.objective_body || '';
+          replaceScenePoints(objectivePanel?.querySelector('.detail-scene-points'), copy.scene_points);
+
+          const capabilitiesTitle = capabilitiesPanel?.querySelector('h4');
+          if (capabilitiesTitle) capabilitiesTitle.textContent = t('ui.details.capabilities');
+          replaceList(capabilitiesPanel?.querySelector('ul'), copy.capabilities);
+
+          const nansenTitle = nansenPanel?.querySelector('h4');
+          if (nansenTitle) nansenTitle.textContent = t('ui.details.nansen');
+          replaceTags(nansenPanel?.querySelector('.detail-tags'), copy.nansen_tags);
+
+          const highlightsTitle = highlightsPanel?.querySelector('h4');
+          if (highlightsTitle) highlightsTitle.textContent = t('ui.details.highlights');
+          replaceList(highlightsPanel?.querySelector('ul'), copy.highlights);
+
+          const usageTitle = card.querySelector('.detail-usage > h4');
+          if (usageTitle) usageTitle.textContent = t('ui.details.usage');
+          replaceUsageSteps(card.querySelector('.detail-steps'), copy.usage_steps);
+        };
+
+        const applySubmissionCopies = () => {
+          cards.forEach((card) => {
+            const submissionId = card.dataset.submission;
+            const entry = getSubmissionEntry(submissionId);
+            const copy = getSubmissionLocale(submissionId);
+            if (!entry || !copy) return;
+            const header = getDirectChild(card, '.card-head');
+            const cardCategory = header?.querySelector('.card-category');
+            const cardRole = header?.querySelector('.card-role');
+            const cardSummary = getDirectChild(card, '.card-summary');
+            if (cardCategory) cardCategory.textContent = copy.category_label;
+            if (cardRole) cardRole.textContent = copy.role_label;
+            if (cardSummary) cardSummary.textContent = copy.card_summary;
+            card.dataset.haystack = entry.haystack || card.dataset.haystack || '';
+            const detailKicker = card.querySelector('.details-showcase .detail-kicker');
+            const detailRole = card.querySelector('.details-showcase .detail-role');
+            if (detailKicker) detailKicker.textContent = copy.category_label;
+            if (detailRole) detailRole.textContent = copy.role_label;
+            applyDetailCopy(card, copy);
+            updateDetailLanguageNote(card);
+          });
+        };
+
+        const applyLanguage = (lang, { persist = false, syncUrl = false } = {}) => {
+          currentLang = isSupportedLocale(lang) ? lang : defaultLocale;
+          document.documentElement.lang = currentLang;
+          if (persist) {
+            safeLocalStorage.set('showcaseLang', currentLang);
+          }
+          if (syncUrl) {
+            syncUrlLanguage(currentLang);
+          }
+          updateLanguageButtons();
+          applyStaticI18n();
+          applySubmissionCopies();
+          cards.forEach((card) => {
+            const details = getCardDetails(card);
+            if (details) updateDetailsSummaryLabel(details);
+          });
+          setGuideCollapsed(guidePanel?.classList.contains('is-collapsed') ?? true);
+          renderGuideCounts();
+          renderGuide();
+          render();
         };
 
         const clearJumpState = ({ closeDetails = false, resetReturn = false } = {}) => {
@@ -9217,8 +12077,9 @@
           });
 
           const visible = visibleCards.length;
-          resultCount.textContent = `${visible}件を表示中`;
+          resultCount.textContent = t('ui.submissions.result_count', { count: visible });
           emptyState.hidden = visible !== 0;
+          resetFilters.hidden = query === '';
           return visibleCards;
         };
 
@@ -9268,6 +12129,14 @@
           if (!collapsed) {
             renderGuide();
           }
+        });
+
+        languageButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const nextLang = button.dataset.langOption;
+            if (!isSupportedLocale(nextLang) || nextLang === currentLang) return;
+            applyLanguage(nextLang, { persist: true, syncUrl: true });
+          });
         });
 
         document.querySelectorAll('[data-jump-filter]').forEach((link) => {
@@ -9341,10 +12210,13 @@
         window.addEventListener('hashchange', openHashTarget);
         window.addEventListener('load', openHashTarget);
 
+        setupPrizeMedia();
+        const initialLanguage = resolveInitialLanguage();
         setGuideCollapsed(true);
-        renderGuideCounts();
-        renderGuide();
-        render();
+        applyLanguage(initialLanguage.lang, {
+          persist: false,
+          syncUrl: initialLanguage.replaceUrl,
+        });
         openHashTarget();
       })();
     </script>
